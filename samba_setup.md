@@ -14,3 +14,5 @@
 	`valid users = <user_name>`
 	`read only = no`
 	* note that it MAY be important to have an blank line between each line 
+6. restart the samba services
+	* `sudo /etc/init.d/samba restart`
