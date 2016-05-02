@@ -7,10 +7,10 @@
 4. run `dpkg -i --force-depends /path/to/deb/file/downloaded/a/step/ago.deb`
 5. these commands should get you there from here on:
 
-`sudo mkdir /mnt/vhd-disk/`
-`sudo vdfuse -f disk.vhd /mnt/vhd-disk/`
-`sudo mkdir /mnt/partition*/`
-`sudo mount /mnt/vhd-disk/Partition* /mnt/partition*`
+* `sudo mkdir /mnt/vhd-disk/`
+* `sudo vdfuse -f disk.vhd /mnt/vhd-disk/`
+* `sudo mkdir /mnt/partition*/`
+* `sudo mount /mnt/vhd-disk/Partition* /mnt/partition*`
 
 
 
