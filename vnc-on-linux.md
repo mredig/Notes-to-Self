@@ -15,6 +15,7 @@
 1. Create a file at `/etc/init.d/`
 	* `sudo nano /etc/init.d/vncboot`
 1. Paste in the following text:
+
 		#!/bin/sh
 		### BEGIN INIT INFO
 		# Provides: vncboot
