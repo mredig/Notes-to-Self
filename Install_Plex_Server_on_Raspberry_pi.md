@@ -16,3 +16,5 @@
   * `sudo apt-get install -t jessie plexmediaserver -y`
 1. Reboot:
   * `sudo reboot`
+1. Configure server from web interface (another computer on the network would be best) by using port *32400* in url formatted like this:
+  * `hostname:32400/web`
