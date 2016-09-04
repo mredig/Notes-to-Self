@@ -19,4 +19,4 @@
 
 ##### To repair an HFSplus drive:
 
-		sudo fsck.hfsplus -f /dev/sdXY
+	sudo fsck.hfsplus -f /dev/sdXY
