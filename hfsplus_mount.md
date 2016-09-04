@@ -17,6 +17,6 @@
 	/dev/sdXY   /media/mntpoint   hfsplus   force,rw
 
 
-* Or to repair an HFSplus drive:
+##### To repair an HFSplus drive:
 
 		sudo fsck.hfsplus -f /dev/sdXY
