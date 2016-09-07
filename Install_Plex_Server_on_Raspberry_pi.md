@@ -18,3 +18,12 @@
   * `sudo reboot`
 1. Configure server from web interface (another computer on the network would be best) by using port *32400* in url formatted like this:
   * `hostname:32400/web`
+
+
+### Maintenance
+
+The service is named *plexmediaserver* so you can use commands like
+
+	sudo service plexmediaserver start
+	sudo service plexmediaserver stop
+	sudo service plexmediaserver status
