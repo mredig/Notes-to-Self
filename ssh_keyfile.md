@@ -7,6 +7,30 @@
 3. You can add a password if you want, but I haven't experimented with how it implements this much.
 4. After generation, it'll also have created a sister file called `id_rsa.pub`. This is your public key. Somehow get the contents of that file to the server.
 
+If you're managing more than one of these files, you need to be careful about overwriting the original *id_rsa* file. If you want to have different keys for each server, simply create the file *~/.ssh/config* and input the following contents (showing more than one entry in example):
+
+* Nickname: *webpi*
+* Hostname: *webpi.local*
+* Username: *this_remote_user*
+
+		Host webpi
+		        HostName webpi.local
+		        IdentityFile ~/.ssh/additional_id_rsa_file
+		        User this_remote_user
+				Port 22 #optional
+		Host server2
+				HostName server2.local
+				IdentityFile ~/.ssh/other_additional_id_rsa_file
+				User this_remote_user
+				Port 22000 #required
+
+From here on out you can just use
+
+	ssh webpi
+
+to connect with the presets above
+
+
 ###Server Machine
 1. Copy the contents of the public key into `.ssh/authorized_keys`
 	* authorized_keys is one line per key (the public key file should only have been one line, so that shouldn't be an issue)
