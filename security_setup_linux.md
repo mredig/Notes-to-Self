@@ -4,7 +4,7 @@
 * Add a limited user account
 	* `adduser example_user`
 	* `adduser example_user sudo`
-* [Create *ssh key auth*](ssh_keyfile)
+* [Create *ssh key auth*](ssh_keyfile.md)
 * ssh config settings */etc/ssh/sshd_config*
 	* `PermitRootLogin no`
 	* `PasswordAuthentication no`
