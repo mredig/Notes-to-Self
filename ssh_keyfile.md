@@ -6,7 +6,7 @@
 2. It'll ask you where to save it. By default it'll be a file named `id_rsa` stored in `~/.ssh` - Be sure that if you want a different file name, you type out the whole path of its destination.
 3. You can add a password if you want, but I haven't experimented with how it implements this much.
 4. After generation, it'll also have created a sister file called `id_rsa.pub`. This is your public key. Somehow get the contents of that file to the server.
-	* `scp ~/.ssh/id_rsa.pub example_user@host_name_or_ip:~/.ssh/authorized_keys`
+	* `scp ~/.ssh/id_rsa.pub example_user@host_name_or_ip:~/authorized_keys` (and then move to the *.ssh* folder)
 
 If you're managing more than one of these files, you need to be careful about overwriting the original *id_rsa* file. If you want to have different keys for each server, simply create the file *~/.ssh/config* and input the following contents (showing more than one entry in example):
 
@@ -35,7 +35,8 @@ to connect with the presets above
 ###Server Machine
 1. Copy the contents of the public key into `.ssh/authorized_keys`
 	* authorized_keys is one line per key (the public key file should only have been one line, so that shouldn't be an issue)
-
+1. Set permissions
+	* `chmod -R 700 .ssh`
 
 That's it!
 
