@@ -18,8 +18,7 @@
 
 ### Single Use Scenario
 1. Do the usual
-	* `sudo apt-get update`
-	* `sudo apt-get upgrade`
+	* `sudo apt-get update && sudo apt-get upgrade -y`
 1. Install tightVNC server
 	* `sudo apt-get install tightvncserver`
 1. Do a first run on the vnc server
