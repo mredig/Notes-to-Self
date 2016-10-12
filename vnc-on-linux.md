@@ -8,7 +8,7 @@
 	* `sudo apt-get install x11vnc vnc4server`
 1. Start server for one session
 	* `sudo x11vnc -display :0`
-1. Possilbe arguments
+1. Possible arguments
 	* `-auth /var/gdm/:0.Xauth`
 	* `-auth guess` - useful
 
