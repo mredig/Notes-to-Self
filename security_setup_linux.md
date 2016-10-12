@@ -4,6 +4,7 @@
 * Add a limited user account
 	* `adduser example_user`
 	* `adduser example_user sudo`
+* Remove default user account (if applicable eg pi)
 * [Create *ssh key auth*](ssh_keyfile.md)
 * ssh config settings */etc/ssh/sshd_config*
 	* `PermitRootLogin no`
