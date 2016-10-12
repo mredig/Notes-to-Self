@@ -1,7 +1,23 @@
 # Setting up VNC on Linux
 
+## X11 VNC (recommended)
+
+1. Update
+	* `sudo apt-get update && sudo apt-get upgrade -y`
+1. Install server
+	* `sudo apt-get install x11vnc vnc4server`
+1. Start server for one session
+	* `sudo x11vnc -display :0`
+1. Possilbe arguments
+	* `-auth /var/gdm/:0.Xauth`
+	* `-auth guess` - useful
+
+
+
+## XTightVNC (not recommended)
+
 ### Single Use Scenario
-1. Do the usual 
+1. Do the usual
 	* `sudo apt-get update`
 	* `sudo apt-get upgrade`
 1. Install tightVNC server
