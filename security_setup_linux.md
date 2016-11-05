@@ -13,7 +13,7 @@
 	* as root `crontab -e`
 		* `10 1 * * * ~/update.sh`
 		* *min hour dom mon dow*
-
+	* possibly use [unattended upgrades](https://wiki.debian.org/UnattendedUpgrades) instead
 * Add a limited user account
 	* `adduser example_user`
 	* `adduser example_user sudo`
