@@ -6,6 +6,8 @@
 	1. Replace *jessie* with *stretch* in that file to point to the testing repository that has the gcc-5 package (or add new line with stretch)
 	1. `sudo apt-get update`
 	1. `sudo apt-get install gcc-5`
+	1. `sudo apt-get upgrade`
+	1. 
 
 
 
