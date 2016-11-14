@@ -2,7 +2,7 @@
 
 * Automatic Upgrades
 	* install [unattended upgrades](https://wiki.debian.org/UnattendedUpgrades)
-	* `apt-get install unattended-upgrades
+	* `apt-get install unattended-upgrades`
 * Add a limited user account
 	* `adduser example_user`
 	* `adduser example_user sudo`
