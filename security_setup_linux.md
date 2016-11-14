@@ -1,19 +1,8 @@
 # Linux Security Prep List
 
 * Automatic Upgrades
-	* as root `nano ~/updates.sh`
-
-		#!/bin/sh
-
-		export PATH=$PATH:/usr/local/sbin:/usr/sbin:/sbin
-
-		apt-get update && apt-get dist-upgrade -y >> ~/update.log
-
-	* `chmod 700 ~/updates.sh`
-	* as root `crontab -e`
-		* `10 1 * * * ~/update.sh`
-		* *min hour dom mon dow*
-	* possibly use [unattended upgrades](https://wiki.debian.org/UnattendedUpgrades) instead
+	* install [unattended upgrades](https://wiki.debian.org/UnattendedUpgrades)
+	* `apt-get install unattended-upgrades
 * Add a limited user account
 	* `adduser example_user`
 	* `adduser example_user sudo`
