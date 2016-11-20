@@ -27,4 +27,6 @@
 		* `ufw allow 22`
 			* **must be run before enabling ufw if you are connected via ssh**
 			* replace 22 with port number for other services (refer to the earlier netstat command)
+		* `ufw allow from 192.168.1.0/24 to any port port 137` #local samba1
+		* `ufw allow from 192.168.1.0/24 to any port port 445` #local samba2
 		* `ufw enable`
