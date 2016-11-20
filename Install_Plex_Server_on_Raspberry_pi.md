@@ -20,6 +20,8 @@
   * `hostname:32400/web`
 
 
+* [Reference](https://www.element14.com/community/community/raspberry-pi/raspberrypi_projects/blog/2016/03/11/a-more-powerful-plex-media-server-using-raspberry-pi-3)
+
 ### Maintenance
 
 The service is named *plexmediaserver* so you can use commands like
