@@ -36,10 +36,10 @@ UFW Settings
 1. Create file `/etc/ufw/applications.d/plexmediaserver`
 1. insert Contents
 
-	[PlexMediaServer]
-	title=Plex Media Server
-	description=This opens up PlexMediaServer for http (32400), upnp, and autodiscovery.
-	ports=32469/tcp,32413/udp,1900/udp,32400/tcp,32412/udp,32410/udp,32414/udp
+		[PlexMediaServer]
+		title=Plex Media Server
+		description=This opens up PlexMediaServer for http (32400), upnp, and autodiscovery.
+		ports=32469/tcp,32413/udp,1900/udp,32400/tcp,32412/udp,32410/udp,32414/udp
 
 1. `ufw allow plexmediaserver`
 1. `ufw allow Samba`
