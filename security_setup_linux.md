@@ -3,6 +3,11 @@
 * Automatic Upgrades
 	* install [unattended upgrades](https://wiki.debian.org/UnattendedUpgrades)
 	* `apt-get install unattended-upgrades`
+		* configure at `/etc/apt/apt.conf.d/50unattended-upgrades`
+		* RPi
+			* uncomment line `"o=Raspbian,n=jessie";`
+			* uncomment and set mail `Unattended-Upgrade::Mail "he@ho.hum";`
+				* will need `bsd-mailx` installed and configured (see other doc)
 * Add a limited user account
 	* `adduser example_user`
 	* `adduser example_user sudo`
