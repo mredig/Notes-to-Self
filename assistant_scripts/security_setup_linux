@@ -148,7 +148,7 @@ sub sshSetup {
 
 	if ($gNewUsername eq "") {
 		print "Which user?: ";
-		chomp($gNewUsername) = <STDIN>;
+		chomp($gNewUsername = <STDIN>);
 		$gNewUsername =~ s/\W//gi;
 	}
 
@@ -159,7 +159,7 @@ sub sshSetup {
 	chdir ".ssh";
 	if (&doesItExist("id_rsa") == 0) {
 		print "Creating ssh key - follow prompts and\n\t-place in directory /home/$gNewUsername/.ssh\n\t-name the file 'id_rsa' (no quotes)\n\t-add a password if you like, but I would argue it's not necessary\n";
-		&runOnSystem("ssh-keygen -t rsa -b 4096")
+		&runOnSystem("ssh-keygen -t rsa -b 4096");
 		my $printPub = &checkYn("Would you like the public key printed onscreen?");
 		if ($printPub) {
 			&showFileContents("id_rsa.pub");
@@ -170,7 +170,7 @@ sub sshSetup {
 		&runOnSystem("touch authorized_keys");
 		print "Paste any public ssh keys in here and press CTRL-D when finished:\n\n";
 		my @publicKeys = <STDIN>;
-		open KEYS ">>authorized_keys";
+		open KEYS, ">>authorized_keys";
 		print KEYS "@publicKeys";
 		close KEYS;
 	}
@@ -182,7 +182,7 @@ sub sshSetup {
 
 	chdir "/etc/ssh";
 
-	&runOnSystem("cp sshd_config sshd_config.default")
+	&runOnSystem("cp sshd_config sshd_config.default");
 
 	&sshdConfiguration;
 
@@ -295,11 +295,11 @@ sub finishUp {
 	# restart ssh
 	print "Restarting ssh...";
 	&runOnSystem("service ssh restart");
-	print "Done.\n;"
+	print "Done.\n";
 	# enable ufw
 	print "Enabling UFW (firewall)...";
 	&runOnSystem("ufw enable");
-	print "Done.\n;"
+	print "Done.\n";
 
 
 	my $reboot = &checkYn("Finished. Would you like to reboot now?");
