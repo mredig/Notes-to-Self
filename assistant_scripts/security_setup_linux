@@ -185,7 +185,7 @@ sub sshSetup {
 
 	if (&doesItExist("authorized_keys") == 0) {
 		&runOnSystem("touch authorized_keys");
-		print "Paste any public ssh keys in here and press CTRL-D when finished:\n\n";
+		print "Paste any public ssh keys in here and press CTRL-D when finished (http://bit.ly/ssh-keygen for more info):\n\n";
 		my @publicKeys = <STDIN>;
 		open KEYS, ">>authorized_keys";
 		print KEYS "@publicKeys";
