@@ -1,0 +1,128 @@
+#!/usr/bin/perl
+
+if ($ARGV[0] eq "-d") {
+	$debug = 1;
+}
+
+
+&main;
+
+sub main {
+	print "Be sure that this script is launched AS ROOT (NOT sudo and NOT su - I mean you CAN run it with those, but you might run into errors) as it will be facilitating many system level changes, including manipulating users.\n";
+	&enterToContinue;
+
+	my $newUser = &checkYn("Do you want to add a new user with sudo (important on raspbian, probably less so on other distros)?");
+	if ($newUser) {
+		&newUserSetup;
+	}
+
+
+
+
+
+	my $runUpgrades = &checkYn("Do you want to run upgrades before continuing? (apt-get update will run regardless)");
+
+	&updates($runUpgrades); #bsd-mailx setup must happen after this
+}
+
+sub newUserSetup {
+	print "What username would you like?: ";
+	chomp(my $newUsername = <STDIN>);
+	$newUsername =~ s/\W//gi;
+	my $confirm = &checkYn("'$newUsername' - is this correct?");
+	if ($confirm == 0) {
+		print "Try one more time: ";
+		chomp($newUsername = <STDIN>);
+		$newUsername =~ s/\W//gi;
+		$confirm = &checkYn("'$newUsername' - is this correct?");
+		if ($confirm == 0) {
+			&dieWithMessage("too many username attempts");
+		}
+	}
+	print "Adding new user '$newUsername' - please follow prompts from system utility:\n";
+	&runOnSystem("adduser $newUsername");
+	&runOnSystem("adduser $newUsername sudo");
+
+	&checkPiUser;
+}
+
+sub checkPiUser {
+	my $remove = &checkyN("This is only relevant if you are using raspbian - would you like to remove the user and homefolder for 'pi'? (Note that this only works if you are NOT using sudo or su - aka logged directly into root!)");
+	if ($remove) {
+		&runOnSystem("deluser --remove-home pi");
+	}
+
+}
+
+sub updates {
+	my $runUpgrades = $_[0];
+
+	&runOnSystem('apt-get update');
+
+	if ($runUpgrades) {
+		&runOnSystem("apt-get upgrade -y");
+	}
+
+	&runOnSystem('apt-get install unattended-upgrades bsd-mailx fail2ban ufw gufw')
+
+}
+
+
+
+## support routines
+
+sub runOnSystem {
+	my $command = $_[0];
+	if ($debug) {
+		print "debug: $command\n";
+	} else {
+		print "not in debug: $command\n";
+		# system("$command");
+	}
+
+}
+
+sub dieWithMessage {
+	my $message = $_[0];
+	die "Please start the script again: $message\n";
+}
+
+sub enterToContinue {
+	print "\nPress enter to continue...\n";
+	my $enter = <STDIN>;
+}
+
+sub checkYn {
+	my $prompt = $_[0] . " [Y/n]:";
+	print "$prompt";
+	my $return = -1;
+	while($return == -1) {
+		chomp(my $yn = <STDIN>);
+		if ($yn =~ /^y*$/i) {
+		 	$return = 1;
+		} elsif ($yn =~ /^n+$/i) {
+			$return = 0;
+		} else {
+			print "Sorry, that's not valid input. Please try again:\n\n$prompt";
+		}
+	}
+	return $return;
+
+}
+
+sub checkyN {
+	my $prompt = $_[0] . " [y/N]:";
+	print "$prompt";
+	my $return = -1;
+	while($return == -1) {
+		chomp(my $yn = <STDIN>);
+		if ($yn =~ /^y+$/i) {
+		 	$return = 1;
+		} elsif ($yn =~ /^n*$/i) {
+			$return = 0;
+		} else {
+			print "Sorry, that's not valid input. Please try again:\n\n$prompt";
+		}
+	}
+	return $return;
+}
