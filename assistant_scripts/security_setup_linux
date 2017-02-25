@@ -10,6 +10,9 @@ $gNewUsername;
 &main;
 
 sub main {
+	print "This script is based off my notes to myself after doing some reserach on securing linux. This occurred after one of my Raspberry Pis became infected with a virus and reinforced the imporatance after the Dyn internet outage. See http://bit.ly/lin-sec for more info.\n";
+	&enterToContinue;
+
 	print "Be sure that this script is launched AS ROOT (NOT sudo and NOT su - I mean you CAN run it with those, but you might run into errors) as it will be facilitating many system level changes, including manipulating users.\n";
 	&enterToContinue;
 
