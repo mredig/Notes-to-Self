@@ -11,16 +11,24 @@ sub main {
 	print "Be sure that this script is launched AS ROOT (NOT sudo and NOT su - I mean you CAN run it with those, but you might run into errors) as it will be facilitating many system level changes, including manipulating users.\n";
 	&enterToContinue;
 
+	&printHeader("New User Setup");
+
 	my $newUser = &checkYn("Do you want to add a new user with sudo (important on raspbian, probably less so on other distros)?");
 	if ($newUser) {
 		&newUserSetup;
 	}
 
+	&printHeader("ssh Setup");
+	# my $sshConfirm - &checkYn("Would you like to configure ")
 
 
 
+	&printHeader("Getting up to Date");
 
 	my $runUpgrades = &checkYn("Do you want to run upgrades before continuing? (apt-get update will run regardless)");
+
+	print "Please note that since the next step installs a package that requires configuration afterwards, you will need to come back in a few minutes after the installation completes.";
+	&enterToContinue;
 
 	&updates($runUpgrades); #bsd-mailx setup must happen after this
 }
@@ -70,6 +78,11 @@ sub updates {
 
 
 ## support routines
+
+sub printHeader {
+	my $header = $_[0];
+	print "\n\n\t$header:\n\n";
+}
 
 sub runOnSystem {
 	my $command = $_[0];
