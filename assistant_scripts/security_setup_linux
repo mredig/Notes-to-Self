@@ -23,6 +23,11 @@ sub main {
 	&printHeader("ssh Setup");
 	&sshSetup;
 
+	&printHeader("system ssh Setup");
+	chdir "/etc/ssh";
+	&runOnSystem("cp sshd_config sshd_config.default");
+	&sshdConfiguration;
+
 
 	&printHeader("Getting up to Date");
 
@@ -86,9 +91,21 @@ sub configFirewall {
 		}
 	}
 
+	print "Here are all the ufw commands that will be run:\n";
 	foreach (@ufwCommands) {
-		&runOnSystem("$_");
+		print "$_\n";
 	}
+	my $satisfied = checkYn("Are you satisfied with these entries?");
+	if ($satisfied) {
+		foreach (@ufwCommands) {
+			&runOnSystem("$_");
+		}
+	} else {
+		&configFirewall;
+	}
+
+
+
 
 
 }
@@ -180,11 +197,7 @@ sub sshSetup {
 	&runOnSystem("chmod -R 700 .ssh");
 	&runOnSystem("chown -R $gNewUsername:$gNewUsername .ssh");
 
-	chdir "/etc/ssh";
 
-	&runOnSystem("cp sshd_config sshd_config.default");
-
-	&sshdConfiguration;
 
 
 }
@@ -198,7 +211,7 @@ sub sshdConfiguration {
 		my %sshdSettings;
 		foreach(@sshdconf) {
 			chomp;
-			if ($_ !~ /^(\w+)\s(.*)/) {
+			if ($_ =~ /^(\w+)\s+(.*)/) {
 				my $key = $1;
 				my $value = $2;
 				if (exists $sshdSettings{$key}) {
@@ -207,6 +220,7 @@ sub sshdConfiguration {
 				$sshdSettings{$key} = $value;
 			}
 		}
+
 
 		my $permitRoot = &checkyN("Do you want to permit root access to ssh?");
 		if ($permitRoot == 1) {
@@ -244,11 +258,14 @@ sub sshdConfiguration {
 		@sshdKeys = sort @sshdKeys;
 		my $sshdConfigOutputString;
 		foreach my $key (@sshdKeys) {
+			my $basekey;
 			if ($key =~ /^(.*)\*!\*.*\*!\*/) {
-				$key = $1;
+				$basekey = $1;
+			} else {
+				$basekey = $key;
 			}
 
-			$sshdConfigOutputString .= "$key $sshdSettings{$key}\n";
+			$sshdConfigOutputString .= "$basekey $sshdSettings{$key}\n";
 		}
 
 		print "Here's the new sshd_config:";
@@ -286,7 +303,7 @@ sub updates {
 		&runOnSystem("apt-get upgrade -y");
 	}
 
-	&runOnSystem('apt-get install unattended-upgrades bsd-mailx fail2ban ufw')
+	&runOnSystem('apt-get install unattended-upgrades bsd-mailx fail2ban ufw -y')
 
 }
 
@@ -341,8 +358,8 @@ sub runOnSystem {
 	if ($debug) {
 		print "debug: $command\n";
 	} else {
-		print "not in debug: $command\n";
-		# system("$command");
+		print "executing: $command\n";
+		system("$command");
 	}
 
 }
