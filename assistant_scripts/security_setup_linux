@@ -28,12 +28,88 @@ sub main {
 
 	my $runUpgrades = &checkYn("Do you want to run upgrades before continuing? (apt-get update will run regardless)");
 
-	print "Please note that since the next step installs a package that requires configuration afterwards, you will need to come back in a few minutes after the installation completes.";
+	print "Please note that since the next step installs packages that require configuration afterwards, you will need to come back in a few minutes after the installation completes.";
 	&enterToContinue;
 
 	&updates($runUpgrades); #bsd-mailx setup must happen after this & ufw
 
+	my $configMail = checkYn("Do you want to configure the mailx package?");
+	&configMail($configMail);
+
+	&configUpdates;
+
+	&configFirewall;
+
 	&finishUp;
+}
+
+sub configFirewall {
+	# show netstat
+	# ask if wanting to limit to subnet
+	# note ssh for user
+
+	print "About to show running processes with open network sockets to help with configuring firewall";
+	&enterToContinue;
+	&runOnSystem("netstat -tulpn");
+
+	my $limitedSubnetSetup = &checkYn("Do you want to limit any connections to just one subnet?");
+
+	my @ufwCommands;
+	if ($limitedSubnetSetup) {
+		my $subnet;
+		while ($subnet !~ /^\d+\.\d+\.\d+\.\d+\/\d+$/) {
+			print "Please enter the subnet with CIDR notation (ex 192.168.1.0/24):";
+			chomp($subnet = <STDIN>);
+		}
+		print "Please enter all ports separated by spaces that you wish to have only accessible via this subnet (don't forget you need port 22 for ssh to work if you are setting up through that):\n";
+		chomp(my $ports = <STDIN>);
+		my @subnetPorts = split / /, $ports;
+		foreach (@subnetPorts) {
+			$_ =~ s/\D//;
+			if ($_ =~ /\d+/) {
+				push @ufwCommands, "ufw allow from $subnet to any port $_";
+			}
+		}
+	}
+
+
+	my $openSetup = &checkyN("Do you want to allow any connections from anywhere?");
+	if ($openSetup) {
+		print "Please enter all ports separated by spaces that you wish to have accessible from any network, whether it's part of this subnet or not (don't forget you need port 22 for ssh to work if you are setting up through that):\n";
+		chomp(my $ports = <STDIN>);
+		my @subnetPorts = split / /, $ports;
+		foreach (@subnetPorts) {
+			$_ =~ s/\D//;
+			if ($_ =~ /\d+/) {
+				push @ufwCommands, "ufw allow $_";
+			}
+		}
+	}
+
+	foreach (@ufwCommands) {
+		&runOnSystem("$_");
+	}
+
+
+}
+
+sub configUpdates {
+	print "Please choose yes to activate unattended-upgrades:";
+	&enterToContinue;
+	&runOnSystem("dpkg-reconfigure unattended-upgrades");
+	print "About to open config for unattended-upgrades - please make sure the stuff you need isn't commented and pay attention to the email and reboot settings:";
+	&enterToContinue;
+	&runOnSystem("nano /etc/apt/apt.conf.d/50unattended-upgrades");
+}
+
+sub configMail {
+	my $config = $_[0];
+	if ($config) {
+		print "Follow prompts and use common sense for setup:";
+		&enterToContinue;
+		&runOnSystem("dpkg-reconfigure exim4-config");
+	}
+
 }
 
 sub newUserSetup {
@@ -106,26 +182,91 @@ sub sshSetup {
 
 	chdir "/etc/ssh";
 
-	open SSHDCONFIG, "<sshd_config";
-	my @sshdconf = <SSHDCONFIG>;
-	close SSHDCONFIG;
+	&runOnSystem("cp sshd_config sshd_config.default")
 
-	# print "Before: @sshdconf";
-	#
-	# foreach(@sshdconf) {
-	# 	$_ =~ s/^[#\s]*PermitRootLogin.*$/PermitRootLogin no/;
-	# 	$_ =~ s/^[#\s]*PasswordAuthentication.*$/PasswordAuthentication no/;
-	# 	$_ =~ s/^[#\s]*AddressFamily.*$/AddressFamily inet/;
-	#
-	# 	# &replaceWith($_, "PasswordAuthentication", "PasswordAuthentication no");
-	# 	# &replaceWith($_, "PermitRootLogin", "PermitRootLogin no");
-	# 	# &replaceWith($_, "AddressFamily", "AddressFamily inet");
-	# }
-	#
-	# print "\n\n\n\n\n\nAfter: @sshdconf";
+	&sshdConfiguration;
 
 
+}
 
+sub sshdConfiguration {
+
+		open SSHDCONFIG, "<sshd_config";
+		my @sshdconf = <SSHDCONFIG>;
+		close SSHDCONFIG;
+
+		my %sshdSettings;
+		foreach(@sshdconf) {
+			chomp;
+			if ($_ !~ /^(\w+)\s(.*)/) {
+				my $key = $1;
+				my $value = $2;
+				if (exists $sshdSettings{$key}) {
+					$key = "$key*!*$value*!*";
+				}
+				$sshdSettings{$key} = $value;
+			}
+		}
+
+		my $permitRoot = &checkyN("Do you want to permit root access to ssh?");
+		if ($permitRoot == 1) {
+			$sshdSettings{"PermitRootLogin"} = "yes";
+		} else {
+			$sshdSettings{"PermitRootLogin"} = "no";
+		}
+
+		my $passwordAuth = &checkyN("Do you want to allow password login over ssh (Important! Choose YES if you didn't setup any public keys earlier or you will be locked out of ssh!)?");
+		if ($passwordAuth == 1) {
+			$sshdSettings{"PasswordAuthentication"} = "yes";
+		} else {
+			$sshdSettings{"PasswordAuthentication"} = "no";
+		}
+
+		my $ip4Address = &checkYn("Do you want to allow ssh access on IPv4?");
+		my $ip6Address = &checkyN("Do you want to allow ssh access on IPv6?");
+		if ($ip4Address == 1 && $ip6Address == 1) {
+			$sshdSettings{"AddressFamily"} = "any";
+		} elsif ($ip4Address == 0 && $ip6Address == 1) {
+			$sshdSettings{"AddressFamily"} = "inet6";
+		} elsif ($ip4Address == 1 && $ip6Address == 0) {
+			$sshdSettings{"AddressFamily"} = "inet";
+		}
+
+		my $changePort = &checkyN("Do you want to change the default port for ssh?");
+		if ($changePort == 1) {
+			print "What port?: ";
+			chomp(my $sshPort = <STDIN>);
+			$sshPort =~ s/\D//;
+			$sshdSettings{"Port"} = $sshPort;
+		}
+
+		my @sshdKeys = keys(%sshdSettings);
+		@sshdKeys = sort @sshdKeys;
+		my $sshdConfigOutputString;
+		foreach my $key (@sshdKeys) {
+			if ($key =~ /^(.*)\*!\*.*\*!\*/) {
+				$key = $1;
+			}
+
+			$sshdConfigOutputString .= "$key $sshdSettings{$key}\n";
+		}
+
+		print "Here's the new sshd_config:";
+
+		&enterToContinue;
+		print "$sshdConfigOutputString";
+
+		my $saveSSHD = &checkYn("Save these changes to sshd_config (a backup has been made)?");
+		if ($saveSSHD && $debug == 0) {
+			open SSHDCONFIG, ">sshd_config";
+			print SSHDCONFIG "$sshdConfigOutputString";
+			close SSHDCONFIG;
+		} else {
+			my $again = checkYn("Would you like to go through sshd_config setup again?");
+			if ($again) {
+				&sshdConfiguration;
+			}
+		}
 }
 
 sub checkPiUser {
@@ -145,14 +286,22 @@ sub updates {
 		&runOnSystem("apt-get upgrade -y");
 	}
 
-	&runOnSystem('apt-get install unattended-upgrades bsd-mailx fail2ban ufw gufw')
+	&runOnSystem('apt-get install unattended-upgrades bsd-mailx fail2ban ufw')
 
 }
 
 sub finishUp {
 	print "Running a few finishing touches...";
 	# restart ssh
+	print "Restarting ssh...";
+	&runOnSystem("service ssh restart");
+	print "Done.\n;"
 	# enable ufw
+	print "Enabling UFW (firewall)...";
+	&runOnSystem("ufw enable");
+	print "Done.\n;"
+
+
 	my $reboot = &checkYn("Finished. Would you like to reboot now?");
 	if ($reboot) {
 		&runOnSystem("reboot");
