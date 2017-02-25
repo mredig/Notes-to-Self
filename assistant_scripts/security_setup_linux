@@ -4,6 +4,8 @@ if ($ARGV[0] eq "-d") {
 	$debug = 1;
 }
 
+$gNewUsername;
+
 
 &main;
 
@@ -19,8 +21,7 @@ sub main {
 	}
 
 	&printHeader("ssh Setup");
-	# my $sshConfirm - &checkYn("Would you like to configure ")
-
+	&sshSetup;
 
 
 	&printHeader("Getting up to Date");
@@ -30,7 +31,9 @@ sub main {
 	print "Please note that since the next step installs a package that requires configuration afterwards, you will need to come back in a few minutes after the installation completes.";
 	&enterToContinue;
 
-	&updates($runUpgrades); #bsd-mailx setup must happen after this
+	&updates($runUpgrades); #bsd-mailx setup must happen after this & ufw
+
+	&finishUp;
 }
 
 sub newUserSetup {
@@ -48,10 +51,81 @@ sub newUserSetup {
 		}
 	}
 	print "Adding new user '$newUsername' - please follow prompts from system utility:\n";
+	$gNewUsername = $newUsername;
 	&runOnSystem("adduser $newUsername");
 	&runOnSystem("adduser $newUsername sudo");
 
 	&checkPiUser;
+}
+
+sub sshSetup {
+	my $sshConfirm;
+	if ($gNewUsername ne "") {
+		$sshConfirm = &checkYn("Would you like to configure ssh for $gNewUsername?");
+	} else {
+		$sshConfirm = &checkYn("Would you like to configure ssh for a user?");
+	}
+
+	if ($sshConfirm == 0) {
+		return;
+	}
+
+	if ($gNewUsername eq "") {
+		print "Which user?: ";
+		chomp($gNewUsername) = <STDIN>;
+		$gNewUsername =~ s/\W//gi;
+	}
+
+	chdir "/home/$gNewUsername";
+	if (&doesItExist(".ssh") == 0) {
+		&runOnSystem("mkdir .ssh");
+	}
+	chdir ".ssh";
+	if (&doesItExist("id_rsa") == 0) {
+		print "Creating ssh key - follow prompts and\n\t-place in directory /home/$gNewUsername/.ssh\n\t-name the file 'id_rsa' (no quotes)\n\t-add a password if you like, but I would argue it's not necessary\n";
+		&runOnSystem("ssh-keygen -t rsa -b 4096")
+		my $printPub = &checkYn("Would you like the public key printed onscreen?");
+		if ($printPub) {
+			&showFileContents("id_rsa.pub");
+		}
+	}
+
+	if (&doesItExist("authorized_keys") == 0) {
+		&runOnSystem("touch authorized_keys");
+		print "Paste any public ssh keys in here and press CTRL-D when finished:\n\n";
+		my @publicKeys = <STDIN>;
+		open KEYS ">>authorized_keys";
+		print KEYS "@publicKeys";
+		close KEYS;
+	}
+
+	chdir "../";
+
+	&runOnSystem("chmod -R 700 .ssh");
+	&runOnSystem("chown -R $gNewUsername:$gNewUsername .ssh");
+
+	chdir "/etc/ssh";
+
+	open SSHDCONFIG, "<sshd_config";
+	my @sshdconf = <SSHDCONFIG>;
+	close SSHDCONFIG;
+
+	# print "Before: @sshdconf";
+	#
+	# foreach(@sshdconf) {
+	# 	$_ =~ s/^[#\s]*PermitRootLogin.*$/PermitRootLogin no/;
+	# 	$_ =~ s/^[#\s]*PasswordAuthentication.*$/PasswordAuthentication no/;
+	# 	$_ =~ s/^[#\s]*AddressFamily.*$/AddressFamily inet/;
+	#
+	# 	# &replaceWith($_, "PasswordAuthentication", "PasswordAuthentication no");
+	# 	# &replaceWith($_, "PermitRootLogin", "PermitRootLogin no");
+	# 	# &replaceWith($_, "AddressFamily", "AddressFamily inet");
+	# }
+	#
+	# print "\n\n\n\n\n\nAfter: @sshdconf";
+
+
+
 }
 
 sub checkPiUser {
@@ -75,9 +149,38 @@ sub updates {
 
 }
 
+sub finishUp {
+	print "Running a few finishing touches...";
+	# restart ssh
+	# enable ufw
+	my $reboot = &checkYn("Finished. Would you like to reboot now?");
+	if ($reboot) {
+		&runOnSystem("reboot");
+	}
 
+}
 
 ## support routines
+
+sub showFileContents {
+	my $file = $_[0];
+	open FILE, "<$file";
+	my @hold = <FILE>;
+	foreach(@hold) {
+		print $_;
+	}
+	close FILE;
+}
+
+sub doesItExist {
+	my $name = $_[0];
+	if (-e $name) {
+		return 1;
+	} else {
+		return 0;
+	}
+
+}
 
 sub printHeader {
 	my $header = $_[0];
