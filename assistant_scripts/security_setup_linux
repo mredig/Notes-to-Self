@@ -12,6 +12,8 @@ $gNewUsername;
 sub main {
 	&runOnSystem('clear && clear');
 
+	&sshdRootAccessCheck;
+
 	print "This script is based off my notes to myself after doing some reserach on securing linux. This occurred after one of my Raspberry Pis became infected with a virus and reinforced the imporatance after the Dyn internet outage. See http://bit.ly/lin-sec for more info.\n";
 	&enterToContinue;
 
@@ -212,6 +214,31 @@ sub sshSetup {
 
 }
 
+sub sshdRootAccessCheck {
+	open SSHDCONFIG, "</etc/ssh/sshd_config" or die "Can't open /etc/ssh/sshd_config: $!\n";
+	my @sshdconf = <SSHDCONFIG>;
+	close SSHDCONFIG;
+
+	my $rootOn = &sshdGetOption("PermitRootLogin", @sshdconf);
+	if ($rootOn !~ /yes/i) {
+		my $argument = "Would you like to temporarily set a root password and enable root login over ssh so you can run this utility? This allows you to be able to easily copy/paste your ssh public key and assures that the other portions of the script will function correctly. These options will be reverted by keeping with the defaults of this script when run from ssh. (also please make sure you're running this with elevated privileges)";
+		my $turnItOn = &checkYn("$argument");
+		if ($turnItOn == 1) {
+			@sshdconf = &sshdAddOption("PermitRootLogin", "yes", @sshdconf);
+			@sshdconf = &sshdAddOption("PasswordAuthentication", "yes", @sshdconf);
+			open SSHDCONFIG, ">/etc/ssh/sshd_config" or die "Can't save /etc/ssh/sshd_config: $!\n";
+			foreach(@sshdconf) {
+				print SSHDCONFIG $_;
+			}
+			close SSHDCONFIG;
+			&runOnSystem("/etc/init.d/ssh restart");
+			die "Run the following commands to change the root password:\n\n\tsudo su\n\tpasswd\n\texit\n\n...Close any other non root sessions and then log in over ssh. Also recommended is to run raspi-config if you're running a Pi before rebooting.\n";
+		}
+
+	}
+
+}
+
 sub sshdConfiguration {
 
 		open SSHDCONFIG, "</etc/ssh/sshd_config";
@@ -294,6 +321,21 @@ sub sshdAddOption {
 	return @sshdConfig;
 }
 
+sub sshdGetOption {
+	my $optionName = shift @_;
+	my @sshdConfig = @_;
+
+	my $rValue = "";
+	foreach my $line (@sshdConfig) {
+		if ($line =~ /^$optionName\s+(.*)/) {
+			$rValue = $1;
+			return $rValue;
+		}
+	}
+
+	return $rValue;
+}
+
 sub checkPiUser {
 	my $remove = &checkyN("This is only relevant if you are using raspbian - would you like to remove the user and homefolder for 'pi'? (Note that this only works if you are NOT using sudo or su - aka logged directly into root!)");
 	if ($remove) {
@@ -308,7 +350,7 @@ sub updates {
 	&runOnSystem('apt-get update');
 
 	if ($runUpgrades) {
-		&runOnSystem("apt-get upgrade -y");
+		&runOnSystem("apt-get upgrade -y --force-yes");
 	}
 
 	&runOnSystem('apt-get install unattended-upgrades bsd-mailx fail2ban ufw -y --force-yes')
@@ -325,6 +367,12 @@ sub finishUp {
 	print "Enabling UFW (firewall)...";
 	&runOnSystem("ufw enable");
 	print "Done.\n";
+
+	my $lockRootPass = checkYn("Would you like to lock the root password? (You can still sudo or sudo su, even with the option to set the password again in the future)");
+	if ($lockRootPass) {
+		&runOnSystem("passwd -l root");
+	}
+
 
 
 	my $reboot = &checkYn("Finished. Would you like to reboot now?");
