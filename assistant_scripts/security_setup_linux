@@ -10,6 +10,8 @@ $gNewUsername;
 &main;
 
 sub main {
+	&runOnSystem('clear && clear');
+
 	print "This script is based off my notes to myself after doing some reserach on securing linux. This occurred after one of my Raspberry Pis became infected with a virus and reinforced the imporatance after the Dyn internet outage. See http://bit.ly/lin-sec for more info.\n";
 	&enterToContinue;
 
@@ -28,7 +30,10 @@ sub main {
 
 	&printHeader("system ssh Setup");
 	chdir "/etc/ssh";
-	&runOnSystem("cp sshd_config sshd_config.default");
+	if (&doesItExist("sshd_config.default") == 0) {
+		&runOnSystem("cp sshd_config sshd_config.default");
+		&runOnSystem("chmod 700 sshd_config.default");
+	}
 	&sshdConfiguration;
 
 
@@ -100,8 +105,10 @@ sub configFirewall {
 	}
 	my $satisfied = checkYn("Are you satisfied with these entries?");
 	if ($satisfied) {
+		print "Please run these commands as root after your next reboot:";
 		foreach (@ufwCommands) {
-			&runOnSystem("$_");
+			# &runOnSystem("$_");
+			print "$_\n";
 		}
 	} else {
 		&configFirewall;
@@ -207,46 +214,35 @@ sub sshSetup {
 
 sub sshdConfiguration {
 
-		open SSHDCONFIG, "<sshd_config";
+		open SSHDCONFIG, "</etc/ssh/sshd_config";
 		my @sshdconf = <SSHDCONFIG>;
 		close SSHDCONFIG;
 
-		my %sshdSettings;
-		foreach(@sshdconf) {
-			chomp;
-			if ($_ =~ /^(\w+)\s+(.*)/) {
-				my $key = $1;
-				my $value = $2;
-				if (exists $sshdSettings{$key}) {
-					$key = "$key*!*$value*!*";
-				}
-				$sshdSettings{$key} = $value;
-			}
-		}
-
-
 		my $permitRoot = &checkyN("Do you want to permit root access to ssh?");
 		if ($permitRoot == 1) {
-			$sshdSettings{"PermitRootLogin"} = "yes";
+			@sshdconf = &sshdAddOption("PermitRootLogin", "yes", @sshdconf);
 		} else {
-			$sshdSettings{"PermitRootLogin"} = "no";
+			@sshdconf = &sshdAddOption("PermitRootLogin", "no", @sshdconf);
 		}
 
 		my $passwordAuth = &checkyN("Do you want to allow password login over ssh (Important! Choose YES if you didn't setup any public keys earlier or you will be locked out of ssh!)?");
 		if ($passwordAuth == 1) {
-			$sshdSettings{"PasswordAuthentication"} = "yes";
+			@sshdconf = &sshdAddOption("PasswordAuthentication", "yes", @sshdconf);
 		} else {
-			$sshdSettings{"PasswordAuthentication"} = "no";
+			@sshdconf = &sshdAddOption("PasswordAuthentication", "no", @sshdconf);
 		}
 
 		my $ip4Address = &checkYn("Do you want to allow ssh access on IPv4?");
 		my $ip6Address = &checkyN("Do you want to allow ssh access on IPv6?");
 		if ($ip4Address == 1 && $ip6Address == 1) {
-			$sshdSettings{"AddressFamily"} = "any";
+			@sshdconf = &sshdAddOption("AddressFamily", "any", @sshdconf);
+
 		} elsif ($ip4Address == 0 && $ip6Address == 1) {
-			$sshdSettings{"AddressFamily"} = "inet6";
+			@sshdconf = &sshdAddOption("AddressFamily", "inet6", @sshdconf);
+
 		} elsif ($ip4Address == 1 && $ip6Address == 0) {
-			$sshdSettings{"AddressFamily"} = "inet";
+			@sshdconf = &sshdAddOption("AddressFamily", "inet", @sshdconf);
+
 		}
 
 		my $changePort = &checkyN("Do you want to change the default port for ssh?");
@@ -254,32 +250,23 @@ sub sshdConfiguration {
 			print "What port?: ";
 			chomp(my $sshPort = <STDIN>);
 			$sshPort =~ s/\D//;
-			$sshdSettings{"Port"} = $sshPort;
-		}
+			@sshdconf = &sshdAddOption("Port", $sshPort, @sshdconf);
 
-		my @sshdKeys = keys(%sshdSettings);
-		@sshdKeys = sort @sshdKeys;
-		my $sshdConfigOutputString;
-		foreach my $key (@sshdKeys) {
-			my $basekey;
-			if ($key =~ /^(.*)\*!\*.*\*!\*/) {
-				$basekey = $1;
-			} else {
-				$basekey = $key;
-			}
-
-			$sshdConfigOutputString .= "$basekey $sshdSettings{$key}\n";
 		}
 
 		print "Here's the new sshd_config:";
 
 		&enterToContinue;
-		print "$sshdConfigOutputString";
+		foreach(@sshdconf) {
+			print $_;
+		}
 
 		my $saveSSHD = &checkYn("Save these changes to sshd_config (a backup has been made)?");
 		if ($saveSSHD && $debug == 0) {
 			open SSHDCONFIG, ">sshd_config";
-			print SSHDCONFIG "$sshdConfigOutputString";
+			foreach(@sshdconf) {
+				print SSHDCONFIG $_;
+			}
 			close SSHDCONFIG;
 		} else {
 			my $again = checkYn("Would you like to go through sshd_config setup again?");
@@ -287,6 +274,24 @@ sub sshdConfiguration {
 				&sshdConfiguration;
 			}
 		}
+}
+
+sub sshdAddOption {
+	my $optionName = shift @_;
+	my $optionValue = shift @_;
+	my @sshdConfig = @_;
+
+	my $newLine = "$optionName $optionValue\n";
+
+	foreach my $line (@sshdConfig) {
+		if ($line =~ /^$optionName/) {
+			$line = $newLine;
+			return @sshdConfig;
+		}
+	}
+
+	push @sshdConfig, $newLine;
+	return @sshdConfig;
 }
 
 sub checkPiUser {
@@ -306,7 +311,7 @@ sub updates {
 		&runOnSystem("apt-get upgrade -y");
 	}
 
-	&runOnSystem('apt-get install unattended-upgrades bsd-mailx fail2ban ufw -y')
+	&runOnSystem('apt-get install unattended-upgrades bsd-mailx fail2ban ufw -y --force-yes')
 
 }
 
