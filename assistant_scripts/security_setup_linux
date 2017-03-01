@@ -181,13 +181,14 @@ sub sshSetup {
 		$gNewUsername =~ s/\W//gi;
 	}
 
-	chdir "/home/$gNewUsername";
+	chdir "/home/";
+	chdir "$gNewUsername";
 	if (&doesItExist(".ssh") == 0) {
 		&runOnSystem("mkdir .ssh");
 	}
 	chdir ".ssh";
 	if (&doesItExist("id_rsa") == 0) {
-		print "Creating ssh key - follow prompts and\n\t-place in directory /home/$gNewUsername/.ssh\n\t-name the file 'id_rsa' (no quotes)\n\t-add a password if you like, but I would argue it's not necessary\n";
+		print "Creating ssh key - follow prompts and\n\t-save files as /home/$gNewUsername/.ssh/id_rsa\n\t-add a password if you like, but I would argue it's not necessary\n";
 		&runOnSystem("ssh-keygen -t rsa -b 4096");
 		my $printPub = &checkYn("Would you like the public key printed onscreen?");
 		if ($printPub) {
@@ -197,12 +198,12 @@ sub sshSetup {
 
 	if (&doesItExist("authorized_keys") == 0) {
 		&runOnSystem("touch authorized_keys");
-		print "Paste any public ssh keys in here and press CTRL-D when finished (http://bit.ly/ssh-keygen for more info):\n\n";
-		my @publicKeys = <STDIN>;
-		open KEYS, ">>authorized_keys";
-		print KEYS "@publicKeys";
-		close KEYS;
 	}
+	print "Paste any public ssh keys in here and press CTRL-D when finished (http://bit.ly/ssh-keygen for more info):\n\n";
+	my @publicKeys = <STDIN>;
+	open KEYS, ">>authorized_keys";
+	print KEYS "@publicKeys";
+	close KEYS;
 
 	chdir "../";
 
@@ -414,7 +415,7 @@ sub runOnSystem {
 	if ($debug) {
 		print "debug: $command\n";
 	} else {
-		print "executing: $command\n";
+		print "  [[executing: $command]]\n";
 		system("$command");
 	}
 
