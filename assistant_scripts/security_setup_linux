@@ -41,12 +41,11 @@ sub main {
 
 	&printHeader("Getting up to Date");
 
-	my $runUpgrades = &checkYn("Do you want to run upgrades before continuing? (apt-get update will run regardless)");
 
 	print "Please note that since the next step installs packages that require configuration afterwards, you will need to come back in a few minutes after the installation completes.";
 	&enterToContinue;
 
-	&updates($runUpgrades); #bsd-mailx setup must happen after this & ufw
+	&updates; #bsd-mailx setup must happen after this & ufw
 
 	my $configMail = checkYn("Do you want to configure the mailx package?");
 	&configMail($configMail);
@@ -188,7 +187,7 @@ sub sshSetup {
 	}
 	chdir ".ssh";
 	if (&doesItExist("id_rsa") == 0) {
-		print "Creating ssh key - follow prompts and\n\t-save files as /home/$gNewUsername/.ssh/id_rsa\n\t-add a password if you like, but I would argue it's not necessary\n";
+		print "Creating ssh key - follow prompts and\n\t-save file as /home/$gNewUsername/.ssh/id_rsa\n\t-add a password if you like, but I would argue it's not necessary\n";
 		&runOnSystem("ssh-keygen -t rsa -b 4096");
 		my $printPub = &checkYn("Would you like the public key printed onscreen?");
 		if ($printPub) {
@@ -214,6 +213,7 @@ sub sshSetup {
 
 
 }
+
 
 sub sshdRootAccessCheck {
 	open SSHDCONFIG, "</etc/ssh/sshd_config" or die "Can't open /etc/ssh/sshd_config: $!\n";
@@ -304,6 +304,7 @@ sub sshdConfiguration {
 		}
 }
 
+
 sub sshdAddOption {
 	my $optionName = shift @_;
 	my $optionValue = shift @_;
@@ -346,7 +347,11 @@ sub checkPiUser {
 }
 
 sub updates {
-	my $runUpgrades = $_[0];
+	my $runUpgrades = &checkYn("Do you want to run upgrades before continuing? (apt-get update will run regardless)");
+
+
+	&fixListChanges;
+	&enterToContinue;
 
 	&runOnSystem('apt-get update');
 
@@ -357,6 +362,45 @@ sub updates {
 	&runOnSystem('apt-get install unattended-upgrades bsd-mailx fail2ban ufw -y --force-yes')
 
 }
+
+sub fixListChanges {
+	my $aptChanges = "/etc/apt/listchanges.conf";
+	open LISTCHANGES, "<$aptChanges";
+	my @listChanges = <LISTCHANGES>;
+	close LISTCHANGES;
+
+	@listChanges = &listChangesAddOption("frontend", "text", @listChanges);
+
+	my $changeApt = &checkYn("Change $aptChanges to NOT stop apt upgrades?");
+	if ($changeApt) {
+		open LISTCHANGES, ">$aptChanges";
+		foreach(@listChanges) {
+			print LISTCHANGES $_;
+		}
+		close LISTCHANGES;
+	}
+
+}
+
+
+sub listChangesAddOption {
+	my $optionName = shift @_;
+	my $optionValue = shift @_;
+	my @listChangesConf = @_;
+
+	my $newLine = "$optionName=$optionValue\n";
+
+	foreach my $line (@listChangesConf) {
+		if ($line =~ /^$optionName/) {
+			$line = $newLine;
+			return @listChangesConf;
+		}
+	}
+
+	push @listChangesConf, $newLine;
+	return @listChangesConf;
+}
+
 
 sub finishUp {
 	print "Running a few finishing touches...";
