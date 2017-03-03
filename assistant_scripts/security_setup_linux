@@ -100,25 +100,45 @@ sub configFirewall {
 		}
 	}
 
-	print "Here are all the ufw commands that will be run:\n";
-	foreach (@ufwCommands) {
-		print "$_\n";
-	}
 	my $satisfied = checkYn("Are you satisfied with these entries?");
 	if ($satisfied) {
-		print "Please run these commands as root after your next reboot:";
+		my $ufwFile = "/var/tmp/ufwCommands.sh";
+		print "These commands will run after reboot (assuming your crontab supports '\@reboot' - otherwise the script will be saved as $ufwFile):\n\n\n";
 		foreach (@ufwCommands) {
-			# &runOnSystem("$_");
 			print "$_\n";
 		}
+		print "ufw enable\n\n\n";
+
+		open UFW, ">$ufwFile";
+		print UFW "#!/bin/sh\n\nPATH=\$PATH:/usr/sbin:/bin:/usr/bin\n\n";
+		foreach (@ufwCommands) {
+			print UFW "$_\n";
+		}
+		print UFW "ufw enable\n";
+
+		print UFW "rm $ufwFile\n";
+
+		my $esc = &escapeSpecial($ufwFile);
+		print UFW "(crontab -l 2>/dev/null) | sed 's/^\\(\@reboot $esc.*\\)/# \\1/' | crontab -";
+		close UFW;
+
+		chmod 755, $ufwFile;
+		# echo '@reboot env > ~/env' | sed 's/^\(.*env > ~\/env.*\)/# \1/'
+		# crontab -l 2>/dev/null; echo '\@reboot $ufwFile') | sed 's/^\(//' | crontab -")
+
+		&runOnSystem("(crontab -l 2>/dev/null;echo '\@reboot $ufwFile') | crontab -");
+
 	} else {
 		&configFirewall;
 	}
 
+}
 
-
-
-
+sub escapeSpecial {
+	my $str = $_[0];
+	$str =~ s/\//\\\//g;
+	$str =~ s/\./\\\./g;
+	return $str;
 }
 
 sub configUpdates {
@@ -347,19 +367,21 @@ sub checkPiUser {
 }
 
 sub updates {
+	
+
+
 	my $runUpgrades = &checkYn("Do you want to run upgrades before continuing? (apt-get update will run regardless)");
 
-
 	&fixListChanges;
-	&enterToContinue;
+	# &enterToContinue;
 
 	&runOnSystem('apt-get update');
 
 	if ($runUpgrades) {
-		&runOnSystem("apt-get upgrade -y --force-yes");
+		&runOnSystem("apt-get upgrade -y");
 	}
 
-	&runOnSystem('apt-get install unattended-upgrades bsd-mailx fail2ban ufw -y --force-yes')
+	&runOnSystem('apt-get install unattended-upgrades bsd-mailx fail2ban ufw -y')
 
 }
 
@@ -408,10 +430,6 @@ sub finishUp {
 	print "Restarting ssh...";
 	&runOnSystem("service ssh restart");
 	print "Done.\n";
-	# enable ufw
-	print "Enabling UFW (firewall)...";
-	&runOnSystem("ufw enable");
-	print "Done.\n";
 
 	my $lockRootPass = checkYn("Would you like to lock the root password? (You can still sudo or sudo su, even with the option to set the password again in the future)");
 	if ($lockRootPass) {
@@ -451,6 +469,7 @@ sub doesItExist {
 
 sub printHeader {
 	my $header = $_[0];
+	&runOnSystem("clear");
 	print "\n\n\t$header:\n\n";
 }
 
