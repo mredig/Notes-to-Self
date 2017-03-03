@@ -367,7 +367,29 @@ sub checkPiUser {
 }
 
 sub updates {
-	
+	my $piAptSources = &checkYn("Is this a Pi that you would like to set to a US apt mirror for?");
+	if ($piAptSources == 1) {
+		my $sourcesPath = "/etc/apt/sources.list";
+		open SOURCES, "<$sourcesPath";
+		my @sources = <SOURCES>;
+		close SOURCES;
+
+		foreach my $line (@sources) {
+			if ($line =~ /mirrordirector/i) {
+				my $comment = "# " . $line;
+				$line =~ s/^deb http:\/\/mirrordirector\.raspbian\.org\/raspbian\/?\s(.*)/deb http:\/\/mirror.us.leaseweb.net\/raspbian\/raspbian $1/;
+				$line = $comment . $line;
+			}
+
+		}
+
+		open SOURCES, ">$sourcesPath";
+		foreach my $line (@sources) {
+			print SOURCES "$line";
+		}
+		close SOURCES;
+	}
+
 
 
 	my $runUpgrades = &checkYn("Do you want to run upgrades before continuing? (apt-get update will run regardless)");
@@ -478,7 +500,7 @@ sub runOnSystem {
 	if ($debug) {
 		print "debug: $command\n";
 	} else {
-		print "  [[executing: $command]]\n";
+		print "\n\n[[executing: $command]]\n\n";
 		system("$command");
 	}
 
