@@ -21,3 +21,7 @@
 	* optional: other useful packages: `php7.0-mbstring php7.0-mysql php7.0-curl`
 1. Confirm *PHP* version
 	* `php -v`
+
+
+
+* [reference](http://steveorevo.com/raspberry-pi3-and-php-7/)
