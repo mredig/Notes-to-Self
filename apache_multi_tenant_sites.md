@@ -18,6 +18,23 @@
 				CustomLog ${APACHE_LOG_DIR}/access.log combined
 			</VirtualHost>
 
+			<VirtualHost *:443>
+
+				ServerName sitename.com
+				ServerAlias www.sitename.com
+
+				ServerAdmin admin@test.com
+				DocumentRoot /var/www/sitename.com/html
+
+				ErrorLog ${APACHE_LOG_DIR}/error-sitename.com.log
+				CustomLog ${APACHE_LOG_DIR}/access-sitename.com.log combined
+
+				SSLEngine On
+				SSLCertificateFile /path/to/cert/sitename.crt
+				SSLCertificateKeyFile /path/to/key/sitename.key
+
+			</VirtualHost>
+
 1. Run `a2ensite` to enable the virtual host (requires admin)
 	* `a2ensite sitename.com.conf`
 1. Restart apache
