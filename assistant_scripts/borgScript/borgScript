@@ -118,6 +118,7 @@ sub runBorgJob {
 	my $runBorg = "not run";
 	if ($debug == 0) {
 		$runBorg = system("$borgCommand");
+		$runBorg = processReturnCode($runBorg);
 	}
 	&logit("#### $borgJob{'backupName'} backup borg script ran successful: *$runBorg*\n\n");
 
@@ -129,6 +130,7 @@ sub runBorgJob {
 		&logit("\n* `$pruneCommand`\n\n");
 		my $runPrune = "not run";
 		$runPrune = system("$pruneCommand"); ## dry run on debug mode
+		$runPrune = processReturnCode($runPrune);
 		&logit("#### $borgJob{'backupName'} prune borg script ran successful: *$runPrune*\n");
 		my $pruneTail = `cat '$borgJob{'pruneLogSTDOUT'}'`;
 		@pruneTailIndent = &indent(1, $pruneTail);
@@ -178,10 +180,28 @@ sub runBorgJob {
 
 }
 
+sub processReturnCode {
+	my $code = $_[0];
+	my $rval = "";
+
+	if ($code == -1) {
+		return "Failed to execute the command.\n";
+	} elsif ($code & 127) {
+		$rval = $code & 127;
+	} else {
+		$rval = $code >> 8;
+	}
+
+	return $rval;
+
+}
+
 sub finishCommand {
 	my $command = $_[0];
 	&logit("running $command");
-	system("$command");
+	my $rCode = system("$command");
+	$rCode = processReturnCode($rCode);
+	return $rCode;
 }
 
 sub generatePruneCommand {
