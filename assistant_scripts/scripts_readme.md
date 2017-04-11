@@ -15,6 +15,8 @@ This is intended to be run very soon after an initial setup of linux. It will do
 	* installs `fail2ban` to blacklist individuals with failed ssh attempts
 * sets up `ufw` for firewall
 
+Here is a convenient direct link to the raw script that is easy enough to type into a console without copy/paste: [http://bit.ly/2o2WQ03](http://bit.ly/2o2WQ03)
+
 It is (ironically) best to enable root ssh access prior to running this script, but will disable that at the end.
 
 There are a few reasons
