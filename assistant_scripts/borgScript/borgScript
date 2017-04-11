@@ -136,6 +136,7 @@ sub runBorgJob {
 
 	}
 
+	&logit("* return code [reference](http://borgbackup.readthedocs.io/en/stable/usage.html#return-codes)\n\n");
 
 	$timeNow = &getTimeStampString;
 	&logit("#### $timeNow: $borgJob{'backupName'} backup finished!\n\n");
