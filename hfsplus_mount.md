@@ -20,3 +20,6 @@
 ##### To repair an HFSplus drive:
 
 	sudo fsck.hfsplus -f /dev/sdXY
+
+
+<!-- https://liquidat.wordpress.com/2007/10/15/short-tip-get-uuid-of-hard-disks/ - to get uuid for that method of mounting -->

@@ -1,12 +1,12 @@
 # Lamp setup on Raspbian
 
 1. run updates
-	* sudo apt-get update
-	* sudo apt-get upgrade
+	* `sudo apt-get update`
+	* `sudo apt-get upgrade`
 2. using the add/remove software option in preferences add
-	* apache2
-	* php5
-	* php5-mysqli
+	* `apache2`
+	* `php5`
+	* `php5-mysqli`
 	* mysql server
 	* (note that the names are not exact)
 3. Set php to display errors and integrate with mysql

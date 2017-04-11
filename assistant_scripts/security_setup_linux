@@ -367,7 +367,7 @@ sub checkPiUser {
 }
 
 sub updates {
-	my $piAptSources = &checkYn("Is this a Pi that you would like to set to a US apt mirror for?");
+	my $piAptSources = &checkyN("Is this a Pi that you would like to set to a US apt mirror for?");
 	if ($piAptSources == 1) {
 		my $sourcesPath = "/etc/apt/sources.list";
 		open SOURCES, "<$sourcesPath";
