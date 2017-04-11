@@ -264,10 +264,11 @@ sub mailReport {
 		return;
 	}
 
+	my $dateString = &getDateString;
 	my $host = `hostname`;
 	chomp($host);
 	my $from = "borgReport\@$host";
-	my $subject = "Borg Report for $backupName";
+	my $subject = "Borg Report for $backupName - $dateString";
 	my $message;
 
 	foreach(@mailLog) {
@@ -391,4 +392,13 @@ sub getTimeStampString() {
 	$min = sprintf("%02d", $min);
 	$string = "$year$mon$mday-$hour$min";
 	return $string;
+}
+
+sub getDateString() {
+	($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
+
+	$mon += 1;
+	my $string = "$mon/$mday";
+	return $string;
+
 }
