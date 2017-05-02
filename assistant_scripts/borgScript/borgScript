@@ -111,6 +111,7 @@ sub runBorgJob {
 	$timeNow = &getTimeStampString;
 
 	&logit("### $timeNow: Starting $borgJob{'backupName'} backup...\n");
+# >/dev/null 2>&1
 
 	my $borgCommand = "borg create $borgJob{'arguments'} --exclude-from $borgJob{'excludeFile'} $borgJob{'repository'}" . "::$borgJob{'archiveName'} '$borgJob{'backupPath'}' " . '> ' . "'$borgJob{'backupLogSTDOUT'}' 2>&1";
 	&logit("\n* `$borgCommand`\n\n");
