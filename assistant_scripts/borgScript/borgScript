@@ -64,7 +64,7 @@ sub processConf {
 	my @confContents = @_;
 	my %borgJob;
 	$borgJob{"confFile"} = $confFile;
-	foreach my $line (@confContents) {
+	foreach my $line (@confContents) { ## read the conf file and set each key value pair in hash to what's in the conf document
 		$line =~ s/#.*$//;
 
 		$line =~ s/\$timeNow/$timeNow/i;
@@ -76,6 +76,8 @@ sub processConf {
 		$borgJob{$option} = $value;
 	}
 
+	$borgJob{'backupPath'} = &processBackupPath($borgJob{'backupPath'});
+
 	$borgJob{'logDirectory'} = &checkTrailingSlash("$borgJob{'logDirectory'}");
 	$borgJob{'pruneLogSTDOUT'} = "$borgJob{'logDirectory'}" . "$borgJob{'backupName'}_pruneSTDOUT.log";
 	$borgJob{'backupLogSTDOUT'} = "$borgJob{'logDirectory'}" . "$borgJob{'backupName'}_STDOUT.log";
@@ -85,6 +87,18 @@ sub processConf {
 
 	&checkValidity(\%borgJob);
 	return %borgJob;
+}
+
+sub processBackupPath {
+	my $backupPath = $_[0];
+	my $rPaths = "";
+	my @paths = split ";", $backupPath;
+	foreach(@paths) {
+		$_ = "'$_'";
+		$rPaths .= "$_ ";
+	}
+	print "paths to backup: $rPaths\n";
+	return $rPaths;
 }
 
 
@@ -113,7 +127,7 @@ sub runBorgJob {
 	&logit("### $timeNow: Starting $borgJob{'backupName'} backup...\n");
 # >/dev/null 2>&1
 
-	my $borgCommand = "borg create $borgJob{'arguments'} --exclude-from $borgJob{'excludeFile'} $borgJob{'repository'}" . "::$borgJob{'archiveName'} '$borgJob{'backupPath'}' " . '> ' . "'$borgJob{'backupLogSTDOUT'}' 2>&1";
+	my $borgCommand = "borg create $borgJob{'arguments'} --exclude-from $borgJob{'excludeFile'} $borgJob{'repository'}" . "::$borgJob{'archiveName'} $borgJob{'backupPath'} " . '> ' . "'$borgJob{'backupLogSTDOUT'}' 2>&1";
 	&logit("\n* `$borgCommand`\n\n");
 	my $runBorg = "not run";
 	if ($debug == 0) {
@@ -124,7 +138,7 @@ sub runBorgJob {
 
 	my @pruneTailIndent;
 	&logit("##### pruning: $borgJob{'prune'}");
-	if ($borgJob{"prune"} eq "yes") {
+	if ($borgJob{"prune"} eq "yes" && $debug == 0) {
 
 		my $pruneCommand = &generatePruneCommand(\%borgJob);
 		&logit("\n* `$pruneCommand`\n\n");
@@ -200,7 +214,10 @@ sub processReturnCode {
 sub finishCommand {
 	my $command = $_[0];
 	&logit("running $command");
-	my $rCode = system("$command");
+	my $rCode = 0;
+	if ($debug == 0) {
+		$rCode = system("$command");
+	}
 	$rCode = processReturnCode($rCode);
 	return $rCode;
 }
@@ -360,7 +377,7 @@ sub printConfInfo {
 logDirectory = "/PATH/TO/LOG/DIRECTORY"
 repository = "/PATH/TO/REPO" #(ssh paths allowed)
 archiveName = "ArchiveNameWith\'$timeNow\'"
-backupPath = "/PATH/TO/OBJECT"
+backupPath = "/PATH/TO/OBJECT;/PATH/TO/ANOTHER/FOLDER" # the path(s) that get backed up - separated by a semi colons (;)
 excludeFile = "/PATH/TO/OBJECT"
 arguments = "--show-rc -v --stats -p --list -C zlib,9"
 backupName = "unparsed name of the backup job for log reasons"
