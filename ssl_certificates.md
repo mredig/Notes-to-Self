@@ -51,37 +51,37 @@
 	* `cp server.key /etc/apache2/ssl/site.key`
 1. Edit the apache virtual host conf file for the site to match something like this:
 
+```
+<VirtualHost *:80>
 
-	<VirtualHost *:80>
+	ServerAdmin webmaster@localhost
+	DocumentRoot /***/path
 
-		ServerAdmin webmaster@localhost
-		DocumentRoot /***/path
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-		ErrorLog ${APACHE_LOG_DIR}/error.log
-		CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
 
-	</VirtualHost>
+<VirtualHost *:443>
+	ServerAdmin webmaster@localhost
+	DocumentRoot /***/path
 
-	<VirtualHost *:443>
-		ServerAdmin webmaster@localhost
-		DocumentRoot /***/path
+	ErrorLog ${APACHE_LOG_DIR}/error.log
+	CustomLog ${APACHE_LOG_DIR}/access.log combined
 
-		ErrorLog ${APACHE_LOG_DIR}/error.log
-		CustomLog ${APACHE_LOG_DIR}/access.log combined
+	SSLEngine On
+	SSLCertificateFile /***/path
+	SSLCertificateKeyFile /***/path
 
-		SSLEngine On
-		SSLCertificateFile /***/path
-		SSLCertificateKeyFile /***/path
+	<Location /> # this section appears to be optional?
+		SSLRequireSSL On
+#		SSLVerifyClient optional # this will present a certificate selection window to the client
+#		SSLVerifyDepth 1
 
-		<Location /> # this section appears to be optional?
-			SSLRequireSSL On
-	#		SSLVerifyClient optional # this will present a certificate selection window to the client
-	#		SSLVerifyDepth 1
-
-			SSLOptions +StdEnvVars +StrictRequire #this appears to be optional?
-		</Location>
-	</VirtualHost>
-
+		SSLOptions +StdEnvVars +StrictRequire #this appears to be optional?
+	</Location>
+</VirtualHost>
+```
 
 
 1. If not already enabled, enable ssl mod
