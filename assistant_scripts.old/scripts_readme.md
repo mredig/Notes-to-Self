@@ -1,5 +1,6 @@
 # Scripts Readme
 
+
 # security_setup_linux
 
 This is intended to be run very soon after an initial setup of linux. It will do the following to help facilitate a secure linux setup:

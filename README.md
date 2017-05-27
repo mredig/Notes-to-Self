@@ -13,3 +13,4 @@ One or some combination of these should get the scripts to load with all their d
 * `git submodule update --init --recursive`
 * `git submodule update --recursive`
 * `git clone --recursive`
+* [reference](https://stackoverflow.com/questions/1535524/git-submodule-inside-of-a-submodule-nested-submodules)
