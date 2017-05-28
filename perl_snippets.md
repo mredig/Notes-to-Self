@@ -77,4 +77,18 @@ sub getExecutableDirectory {
 	return $dirname;
 }
 
+sub getTimeStampString() {
+	($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
+
+	$year += 1900;
+	$mon += 1;
+	$mon = sprintf("%02d", $mon);
+	$mday = sprintf("%02d", $mday);
+	$hour = sprintf("%02d", $hour);
+	$min = sprintf("%02d", $min);
+	$string = "$year$mon$mday-$hour$min";
+	return $string;
+}
+
+
 ```
