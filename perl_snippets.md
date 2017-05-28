@@ -70,4 +70,11 @@ sub checkyN { ## provided a prompt, will ask user how to proceed, assuming NO an
 	return $rVal;
 }
 
+sub getExecutableDirectory {
+	## requires use Cwd 'abs_path';
+	my $fullPath = abs_path($0);
+	my $dirname  = dirname($fullPath);
+	return $dirname;
+}
+
 ```
