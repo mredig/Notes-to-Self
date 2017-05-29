@@ -90,5 +90,39 @@ sub getTimeStampString() {
 	return $string;
 }
 
+## this next one is a bit more specific, but should be easily adaptable
+sub processArguments {
+	$ranSomething = 0;
+	for (my $i = 0; $i < scalar(@ARGV); $i++) {
+		my $arg = $ARGV[$i];
+		if ($arg =~ /^-(\w)/) {
+			$arg = $1;
+			&processArgument($arg, $ARGV[$i + 1]);
+		}
+	}
+	if ($ranSomething == 0) {
+		print "Usage: clam_run_conf -c [pathtoconf1] -c [pathtoconf2]\n\nno limit on conf inputs\nwill DIE on first incorrectly formatted conf - following confs will NOT be run!\n";
+	}
+
+}
+sub processArgument {
+	my $arg = $_[0];
+	my $nextArg = $_[1];
+	if ($arg eq "c" && $nextArg ne "") { #maybe do -e
+		my $confFile = $nextArg;
+		my %borgJob = &loadConfFile($confFile);
+		&runBorgJob(\%borgJob);
+	} elsif ($arg eq "d") {
+		$debug = 1;
+	}
+}
+
+sub checkTrailingSlash {
+	my $str = $_[0];
+	if ($str !~ /\/$/) {
+		$str .= "/";
+	}
+	return $str;
+}
 
 ```
