@@ -17,4 +17,5 @@ One or some combination of these should get the scripts to load with all their d
 * [updating the repositories](https://stackoverflow.com/questions/8191299/update-a-submodule-to-the-latest-commit)
 	* looks like it's a matter of
 		1. `git submodule update --remote --merge`
+		1. `git add [submodule directory]`
 		1. `git commit -m "updated submodules"`
