@@ -70,4 +70,59 @@ sub checkyN { ## provided a prompt, will ask user how to proceed, assuming NO an
 	return $rVal;
 }
 
+sub getExecutableDirectory {
+	## requires use Cwd 'abs_path';
+	my $fullPath = abs_path($0);
+	my $dirname  = dirname($fullPath);
+	return $dirname;
+}
+
+sub getTimeStampString() {
+	($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
+
+	$year += 1900;
+	$mon += 1;
+	$mon = sprintf("%02d", $mon);
+	$mday = sprintf("%02d", $mday);
+	$hour = sprintf("%02d", $hour);
+	$min = sprintf("%02d", $min);
+	$string = "$year$mon$mday-$hour$min";
+	return $string;
+}
+
+## this next one is a bit more specific, but should be easily adaptable
+sub processArguments {
+	$ranSomething = 0;
+	for (my $i = 0; $i < scalar(@ARGV); $i++) {
+		my $arg = $ARGV[$i];
+		if ($arg =~ /^-(\w)/) {
+			$arg = $1;
+			&processArgument($arg, $ARGV[$i + 1]);
+		}
+	}
+	if ($ranSomething == 0) {
+		print "Usage: clam_run_conf -c [pathtoconf1] -c [pathtoconf2]\n\nno limit on conf inputs\nwill DIE on first incorrectly formatted conf - following confs will NOT be run!\n";
+	}
+
+}
+sub processArgument {
+	my $arg = $_[0];
+	my $nextArg = $_[1];
+	if ($arg eq "c" && $nextArg ne "") { #maybe do -e
+		my $confFile = $nextArg;
+		my %borgJob = &loadConfFile($confFile);
+		&runBorgJob(\%borgJob);
+	} elsif ($arg eq "d") {
+		$debug = 1;
+	}
+}
+
+sub checkTrailingSlash {
+	my $str = $_[0];
+	if ($str !~ /\/$/) {
+		$str .= "/";
+	}
+	return $str;
+}
+
 ```
