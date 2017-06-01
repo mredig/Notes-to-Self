@@ -36,7 +36,7 @@ sub enterToContinue {
 	my $enter = <STDIN>;
 }
 
-sub checkYn { ## provided a prompt, will ask user how to proceed, assuming YES and else opting yes
+sub checkYn { ## provided a prompt, will ask user how to proceed, assuming YES and else opting no
 	my $prompt = $_[0] . " [Y/n]:";
 	print "$prompt";
 	my $rVal = -1;
@@ -71,7 +71,8 @@ sub checkyN { ## provided a prompt, will ask user how to proceed, assuming NO an
 }
 
 sub getExecutableDirectory {
-	## requires use Cwd 'abs_path';
+	## use Cwd 'abs_path';
+	## use File::Basename;
 	my $fullPath = abs_path($0);
 	my $dirname  = dirname($fullPath);
 	return $dirname;
@@ -124,5 +125,16 @@ sub checkTrailingSlash {
 	}
 	return $str;
 }
+
+#get current user
+my $login = getlogin;
+
+
+sub convertToUnixLineEndings {
+	my $str = $_[0];
+	$str =~ s/\r\n/\n/g;
+	return $str;
+}
+
 
 ```
