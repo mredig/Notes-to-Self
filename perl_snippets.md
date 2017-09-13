@@ -36,7 +36,7 @@ sub enterToContinue {
 	my $enter = <STDIN>;
 }
 
-sub checkYn { ## provided a prompt, will ask user how to proceed, assuming YES and else opting no
+sub checkYn { ## provided a prompt, will ask user how to proceed, assuming YES and else opting yes
 	my $prompt = $_[0] . " [Y/n]:";
 	print "$prompt";
 	my $rVal = -1;
@@ -71,8 +71,7 @@ sub checkyN { ## provided a prompt, will ask user how to proceed, assuming NO an
 }
 
 sub getExecutableDirectory {
-	## use Cwd 'abs_path';
-	## use File::Basename;
+	## requires use Cwd 'abs_path';
 	my $fullPath = abs_path($0);
 	my $dirname  = dirname($fullPath);
 	return $dirname;
@@ -102,7 +101,7 @@ sub processArguments {
 		}
 	}
 	if ($ranSomething == 0) {
-		print "Usage: clam_run_conf -c [pathtoconf1] -c [pathtoconf2]\n\nno limit on conf inputs\nwill DIE on first incorrectly formatted conf - following confs will NOT be run!\n";
+		print "Usage: example usage\n";
 	}
 
 }
@@ -110,11 +109,11 @@ sub processArgument {
 	my $arg = $_[0];
 	my $nextArg = $_[1];
 	if ($arg eq "c" && $nextArg ne "") { #maybe do -e
-		my $confFile = $nextArg;
-		my %borgJob = &loadConfFile($confFile);
-		&runBorgJob(\%borgJob);
+		# most of these are examples as to how to use this code
+		# my $confFile = $nextArg;
+		# &loadConfFile($confFile);
 	} elsif ($arg eq "d") {
-		$debug = 1;
+		#$debug = 1;
 	}
 }
 
@@ -125,16 +124,5 @@ sub checkTrailingSlash {
 	}
 	return $str;
 }
-
-#get current user
-my $login = getlogin;
-
-
-sub convertToUnixLineEndings {
-	my $str = $_[0];
-	$str =~ s/\r\n/\n/g;
-	return $str;
-}
-
 
 ```
