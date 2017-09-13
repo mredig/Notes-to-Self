@@ -1,3 +1,4 @@
+<!-- permalink: 338e8d48346401a118cd50d6b0838043 DO NOT DELETE OR EDIT THIS LINE -->
 # Let's Encrypt Setup
 
 1. Download and set up *certbot* (Only do this once)
