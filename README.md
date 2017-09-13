@@ -5,6 +5,8 @@ This is just a collection of notes to myself about how to set up different thing
 
 This collection of documentation is also serving as content for [demoing](markdowndemo.redeggproductions.com) my [markdown repository project](https://github.com/mredig/markdownrepo).
 
+If you are reading this from the demo site, this is the [GitHub](https://github.com/mredig/Notes-to-Self) source. Also, this is Michael's [GitHub](https://github.com/mredig/) if you are interested in any other projects he maintains or contributes to.
+
 
 ### load scripts
 Note that the scripts aren't necessary - they directly relate to topics covered in these notes, but aren't necessary to the notes themselves.
