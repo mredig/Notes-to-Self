@@ -1,3 +1,4 @@
+<!-- permalink: de7070d94505ca27eaaff01d56c09495 DO NOT DELETE OR EDIT THIS LINE -->
 # Generating SSL Certificates For Apache
 
 1. Run this as root (the key will not be password protected so you need to make sure it's limited in access) in the root home folder

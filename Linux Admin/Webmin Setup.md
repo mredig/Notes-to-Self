@@ -1,3 +1,4 @@
+<!-- permalink: a649512b13ac0138abb8320025bf7dee DO NOT DELETE OR EDIT THIS LINE -->
 # Installing Webmin
 
 1. Download webmin from the official site:

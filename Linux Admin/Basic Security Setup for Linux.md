@@ -1,3 +1,4 @@
+<!-- permalink: c716ef85197d7b5aeb5db8a7a1bd58a9 DO NOT DELETE OR EDIT THIS LINE -->
 # Linux Security Prep List
 
 * Automatic Upgrades

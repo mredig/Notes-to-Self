@@ -1,3 +1,4 @@
+<!-- permalink: 45390fb3907640e96fda5052f44f785b DO NOT DELETE OR EDIT THIS LINE -->
 # Raspbian overscan settings
 
 1. Edit /boot/config.txt

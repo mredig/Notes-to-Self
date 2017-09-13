@@ -1,3 +1,4 @@
+<!-- permalink: cb856cbd78324962eab8cc186a5ddc50 DO NOT DELETE OR EDIT THIS LINE -->
 # Install Plex Media Server on Raspberry Pi
 
 1. run updates

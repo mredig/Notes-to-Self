@@ -1,3 +1,4 @@
+<!-- permalink: 5de0dee00c4ff6c42f920f7b9c63b166 DO NOT DELETE OR EDIT THIS LINE -->
 # Perl Snippets
 
 This is a collection of Perl snippets I've written or otherwise come across that I would like available for future reference.

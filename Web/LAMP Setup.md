@@ -1,3 +1,4 @@
+<!-- permalink: 218961f9fdb953739c9858495ccd17a9 DO NOT DELETE OR EDIT THIS LINE -->
 # Lamp setup on Raspbian
 
 1. run updates

@@ -1,3 +1,4 @@
+<!-- permalink: e390b6e28292dc9b018b406334496d16 DO NOT DELETE OR EDIT THIS LINE -->
 # Mount HFS plus on Linux
 
 1. run updates

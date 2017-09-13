@@ -1,3 +1,4 @@
+<!-- permalink: e280a5125761d2d1cb6549b6ff73832f DO NOT DELETE OR EDIT THIS LINE -->
 # Apache Multi Tenant Sites
 
 1. Navigate to `/etc/apache2/sites-available/`

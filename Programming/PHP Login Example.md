@@ -1,3 +1,4 @@
+<!-- permalink: b58b4dd09982f702a245236d12ed90d0 DO NOT DELETE OR EDIT THIS LINE -->
 # PHP Login
 
 * login.php:

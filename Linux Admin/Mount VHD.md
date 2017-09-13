@@ -1,3 +1,4 @@
+<!-- permalink: 859ba28d357b90731b00d51f6ded90f6 DO NOT DELETE OR EDIT THIS LINE -->
 # Mounting VHD on Linux
 
 1. Add to /etc/apt/sources.list `deb http://download.virtualbox.org/virtualbox/debian xenial contrib`

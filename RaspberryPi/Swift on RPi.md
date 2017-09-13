@@ -1,3 +1,4 @@
+<!-- permalink: 86b83fc94bf9496f7c01047e7b4ea70e DO NOT DELETE OR EDIT THIS LINE -->
 # Swift on RPi3 Raspbian
 
 1. Download from [this site](http://swift-arm.ddns.net/job/Swift-3.0-Pi3-ARM-Incremental/)

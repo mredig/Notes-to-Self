@@ -1,3 +1,4 @@
+<!-- permalink: 6fa7f3401cb83baf255fc5fcbb202074 DO NOT DELETE OR EDIT THIS LINE -->
 # Common Packages
 
 Most of these will just work following `sudo apt-get install`, but some will have other manual dependencies. I will try to note where, but it will inevitably get out of date.

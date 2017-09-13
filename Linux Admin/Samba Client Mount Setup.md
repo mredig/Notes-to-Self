@@ -1,3 +1,4 @@
+<!-- permalink: 949c09c6b4c3684121671d66f9abb5f9 DO NOT DELETE OR EDIT THIS LINE -->
 # Samba Client Mount Setup on Linux
 
 1. run updates

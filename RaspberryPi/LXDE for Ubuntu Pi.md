@@ -1,3 +1,4 @@
+<!-- permalink: 794ad3d18b6dfd6b54292cb3e7ad0324 DO NOT DELETE OR EDIT THIS LINE -->
 # LXDE On Ubuntu Mate
 
 1. update

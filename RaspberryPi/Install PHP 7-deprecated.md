@@ -1,3 +1,4 @@
+<!-- permalink: 3a21c85ea00eeaec62886183928e8938 DO NOT DELETE OR EDIT THIS LINE -->
 # Raspbian PHP 7
 
  1. Add *stretch* to apt sources:

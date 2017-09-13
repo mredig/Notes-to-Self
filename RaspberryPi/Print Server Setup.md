@@ -1,3 +1,4 @@
+<!-- permalink: 6e4cef2ff7c2f2229cd6975c1cc265e4 DO NOT DELETE OR EDIT THIS LINE -->
 # RPi Print Server
 
 1. `sudo apt update && sudo apt upgrade -y`

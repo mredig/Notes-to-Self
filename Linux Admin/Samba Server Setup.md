@@ -1,3 +1,4 @@
+<!-- permalink: 13ea28a62a780d8775a083c569c94323 DO NOT DELETE OR EDIT THIS LINE -->
 # Samba Setup on Linux
 
 1. run updates

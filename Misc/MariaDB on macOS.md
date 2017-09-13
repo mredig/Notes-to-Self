@@ -1,3 +1,4 @@
+<!-- permalink: e544d5373b6f3207fb72360c9860432d DO NOT DELETE OR EDIT THIS LINE -->
 # Setting Up MariaDB on macOS
 
 1. install [homebrew](http://brew.sh)

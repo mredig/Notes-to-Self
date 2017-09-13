@@ -1,3 +1,4 @@
+<!-- permalink: 73fad25d8760dac03807a9d147a9663c DO NOT DELETE OR EDIT THIS LINE -->
 # Setting up VNC on Linux
 
 ## X11 VNC (recommended)
