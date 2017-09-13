@@ -1,18 +1,14 @@
-# Notes
+This is just a collection of notes to myself about how to set up different things with programming and admin utilities
 
-This is just a collection of notes to myself about how to set up different things with programming and admin utilities - I suppose anyone may feel free to add any additions and ideas of their own with a pull request
+This collection of documentation is also serving as content for [demoing](markdowndemo.redeggproductions.com) my [markdown repository project](https://github.com/mredig/markdownrepo).
 
 
 ### load scripts
 Note that the scripts aren't necessary - they directly relate to topics covered in these notes, but aren't necessary to the notes themselves.
 
-Right now, this section is no more than scratch notes:
-
-One or some combination of these should get the scripts to load with all their dependencies
-
-* `git submodule update --init --recursive`
+How to get the submodules to load their repositories
+* `git submodule init`
 * `git submodule update --recursive`
-* `git clone --recursive`
 * [reference](https://stackoverflow.com/questions/1535524/git-submodule-inside-of-a-submodule-nested-submodules)
 * [updating the repositories](https://stackoverflow.com/questions/8191299/update-a-submodule-to-the-latest-commit)
 	* looks like it's a matter of
