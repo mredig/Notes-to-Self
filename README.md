@@ -3,7 +3,7 @@
 
 This is just a collection of notes to myself about how to set up different things with programming and admin utilities
 
-This collection of documentation is also serving as content for [demoing](markdowndemo.redeggproductions.com) my [markdown repository project](https://github.com/mredig/markdownrepo).
+This collection of documentation is also serving as content for [demoing](https://markdowndemo.redeggproductions.com) my [markdown repository project](https://github.com/mredig/markdownrepo).
 
 If you are reading this from the demo site, this is the GitHub [note source](https://github.com/mredig/Notes-to-Self). Also, this is Michael's [GitHub](https://github.com/mredig/) if you are interested in any other projects he maintains or contributes to.
 
