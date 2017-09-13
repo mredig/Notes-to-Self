@@ -1,3 +1,5 @@
+# README
+
 This is just a collection of notes to myself about how to set up different things with programming and admin utilities
 
 This collection of documentation is also serving as content for [demoing](markdowndemo.redeggproductions.com) my [markdown repository project](https://github.com/mredig/markdownrepo).
