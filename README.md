@@ -1,3 +1,4 @@
+<!-- permalink: 93c333da4f2f3512cf42e3a20574008c DO NOT DELETE OR EDIT THIS LINE -->
 # README
 
 This is just a collection of notes to myself about how to set up different things with programming and admin utilities
