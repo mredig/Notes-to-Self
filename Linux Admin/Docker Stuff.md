@@ -26,8 +26,7 @@
 		* `docker run -v webdata:/usr/share/nginx/html -d --name=web1 -p 8080:80 nginx`
 
 * Networking
-	* `--link` is OLD - go to a new tutorial
-
+	* if you encounter `--link` your resource is **OLD** - go to a new tutorial
 	* create a new docker network
 		* `docker network create sampleapp`
 	* use the previously created network and provide a "dns" name
