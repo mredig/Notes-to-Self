@@ -2,8 +2,8 @@
 # Docker Stuff
 
 * vocab
-	* `image` is read only - it is just the source blob that a container is created from
-	* `container` is the executing image that can be written to and used
+	* *image* is read only - it is just the source blob that a container is created from
+	* *container* is the executing image that can be written to and used (but treat it as if it is ephemeral)
 
 * Run Centos prompt
 	* `docker run --rm -ti centos /bin/bash`
