@@ -10,6 +10,8 @@ Most of these will just work following `sudo apt-get install`, but some will hav
 * BSD-Mailx
 	* `bsd-mailx`
 		* configure with `dpkg-reconfigure exim4-config`
+* DNSUtils (including `dig`)
+	* `dnsutils`
 * Fail2Ban
 	* `fail2ban`
 * Fuse
@@ -19,10 +21,8 @@ Most of these will just work following `sudo apt-get install`, but some will hav
 * MariaDB
 	* `mariadb-server`
 * PHP
- 	* `php5`
-	* `php5-mysqli`
-	* `php7.0` - requires *stretch* on debian
-	* `php7.0-mbstring php7.0-mysql php7.0-curl`
+	* `php`
+	* `php-mbstring php-mysql php-curl`
 * Samba
 	* `samba`
 * Samba fstab client

@@ -20,6 +20,9 @@
         directory mask = 755
         browseable = yes
 
+	* this can be useful if you need to modify permissions that are written:
+		* `force user = [usernameNoBrackets]`
+
 6. restart the samba services
 	* `sudo /etc/init.d/samba restart`
 7. If you have a firewall setup, open ports `137` and `445`
