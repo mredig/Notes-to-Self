@@ -6,6 +6,19 @@
 	* `service sysstat start`
 	* `chkconfig sysstat on`
 	* logs located in `/var/log/sa/`
-	* immediate results:
-		* `sar -r` (ram)
-		* `sar -n ALL` (network)
+
+
+* debian:
+	1. should already be installed
+	1. `nano /etc/default/sysstat`
+	 	* make sure it says `ENABLED="true"`
+	1. `nano /etc/cron.d/sysstat`
+		* change `5-55/10 * * * * ...` to
+		* `*/2 * * * * ...`
+	1. `service sysstat restart`
+	1. logs are located in */var/log/sysstat/*
+
+
+
+* `sar -r` (ram)
+* `sar -n ALL` (network)
