@@ -42,7 +42,7 @@ Note that this has not been proofread or double checked, but should be good
 1. make sure to update packages before proceeding:
 	* `apt update && apt upgrade -y`
 1. Install the following packages (`apt install ...` ... yes it's a doozy)
-	* `ssh openssh-server nano dnsutils ntp postfix postfix-mysql postfix-doc mariadb-client mariadb-server openssl getmail4 rkhunter binutils dovecot-imapd dovecot-pop3d dovecot-mysql dovecot-sieve dovecot-lmtpd sudo amavisd-new spamassassin clamav clamav-daemon zoo unzip bzip2 arj nomarch lzop cabextract apt-listchanges libnet-ldap-perl libauthen-sasl-perl clamav-docs daemon libio-string-perl libio-socket-ssl-perl libnet-ident-perl zip libnet-dns-perl libdbd-mysql-perl postgrey git lua5.1 liblua5.1-0-dev lua-filesystem libidn11-dev libssl-dev lua-zlib lua-expat lua-event lua-bitop lua-socket lua-sec luarocks luarocks apache2 apache2-doc apache2-utils libapache2-mod-php libapache2-mod-fcgid apache2-suexec-pristine php-pear mcrypt imagemagick libruby libapache2-mod-python memcached php-memcache php-imagick php-gettext memcached libapache2-mod-passenger php-soap php php-common php-gd php-mysql php-imap phpmyadmin php-cli php-cgi php-mcrypt php-curl php-pspell php-recode php-sqlite3 php-tidy php-xmlrpc php-xsl php-intl php-zip php-mbstring certbot php-fpm php-opcache php-apcu mailman pure-ftpd-common pure-ftpd-mysql quota quotatool bind9 dnsutils haveged webalizer awstats geoip-database libclass-dbi-mysql-perl libtimedate-perl build-essential autoconf automake libtool flex bison debhelper binutils fail2ban roundcube roundcube-core roundcube-mysql roundcube-plugins python-certbot-apache`
+	* `ssh openssh-server nano dnsutils ntp postfix postfix-mysql postfix-doc mariadb-client mariadb-server openssl getmail4 rkhunter binutils dovecot-imapd dovecot-pop3d dovecot-mysql dovecot-sieve dovecot-lmtpd sudo amavisd-new spamassassin clamav clamav-daemon zoo unzip bzip2 arj nomarch lzop cabextract apt-listchanges libnet-ldap-perl libauthen-sasl-perl clamav-docs daemon libio-string-perl libio-socket-ssl-perl libnet-ident-perl zip libnet-dns-perl libdbd-mysql-perl postgrey git lua5.1 liblua5.1-0-dev lua-filesystem libidn11-dev libssl-dev lua-zlib lua-expat lua-event lua-bitop lua-socket lua-sec luarocks luarocks apache2 apache2-doc apache2-utils libapache2-mod-php libapache2-mod-fcgid apache2-suexec-pristine php-pear mcrypt imagemagick libruby libapache2-mod-python memcached php-memcache php-imagick php-gettext memcached libapache2-mod-passenger php-soap php php-common php-gd php-mysql php-imap phpmyadmin php-cli php-cgi php-mcrypt php-curl php-pspell php-recode php-sqlite3 php-tidy php-xmlrpc php-xsl php-intl php-zip php-mbstring certbot php-fpm php-opcache php-apcu pure-ftpd-common pure-ftpd-mysql quota quotatool bind9 dnsutils haveged webalizer awstats geoip-database libclass-dbi-mysql-perl libtimedate-perl build-essential autoconf automake libtool flex bison debhelper binutils fail2ban roundcube roundcube-core roundcube-mysql roundcube-plugins python-certbot-apache`
 	* In no particular order, you will be asked the following questions about package configuration:
 		* email:
 			* type of mail configuration:
@@ -53,17 +53,21 @@ Note that this has not been proofread or double checked, but should be good
 		* phpmyadmin (pma)
 			* web server to reconfigure:
 				* *apache2*
+					* note that you have to hit the *spacebar* to select your option before you hit okay
 			* configure database for pma:
 				* *yes*
 			* pma application password
 				* just hit enter
 			* admin password
 				* mysql root password (not set yet... will be set after everything installs, so make note of what you enter here to be used to set it to match)
-		* mailman:
-			* languages to support
-				* choose at least one
-			* missing site list
-				* *ok*
+		* roundcube:
+			* configure database for roundcube:
+				* *yes*
+			* roundcube application password
+				* just hit enter
+			* database admin password
+				* mysql root password (not set yet... will be set after everything installs, so make note of what you enter here to be used to set it to match)
+
 1. Configure and secure MariaDB (MariaDB is a drop in replacement for MySQL):
 	1. `mysql_secure_installation`
 		1. change the root password:
@@ -78,7 +82,7 @@ Note that this has not been proofread or double checked, but should be good
 		1. reload privilege tables:
 			* *yes*
 	1. `nano /etc/mysql/mariadb.conf.d/50-server.cnf`
-		* should look like:
+		* should look like (`NO_ENGINE_SUBSTITUTION` line is new):
 			```
 			[...]
 			# Instead of skip-networking the default is now to listen only on
@@ -98,12 +102,12 @@ Note that this has not been proofread or double checked, but should be good
 			[client]
 			host = localhost
 			user = root
-			password = [rootpasswordNobrackets]
+			password = [rootSQLpasswordNobrackets]
 			socket = /var/run/mysqld/mysqld.sock
 			[mysql_upgrade]
 			host = localhost
 			user = root
-			password = [rootpasswordNobrackets]
+			password = [rootSQLpasswordNobrackets]
 			socket = /var/run/mysqld/mysqld.sock
 			basedir = /usr
 			```
@@ -146,8 +150,13 @@ Note that this has not been proofread or double checked, but should be good
 			[...]
 			```
 
-	1. Configure *Mailman*
+	1. Configure *Mailman* (optional - not recommended)
 		* I don't know what this is, but apparently we need to create a first mailing list:
+			1. `apt install mailman`
+				* languages to support
+					* choose at least one
+				* missing site list
+					* *ok*
 			1. `newlist mailman`
 				* enter email of person running list:
 					* enter an email, can probably be one that isn't created yet
@@ -200,7 +209,7 @@ Note that this has not been proofread or double checked, but should be good
 				```
 		1. `a2enconf httpoxy`
 		1. `service apache2 restart`
-	1. fix PHPMyAdmin access
+	1. fix PHPMyAdmin access (if you forgot to hit the spacebar for apache earlier)
 		1. `ln -s /etc/phpmyadmin/apache.conf /etc/apache2/conf-enabled/phpmyadmin.conf`
 
 1. Configure *PureFTPd*
@@ -215,7 +224,7 @@ Note that this has not been proofread or double checked, but should be good
 			[...]
 			```
 	1. `echo 1 > /etc/pure-ftpd/conf/TLS`
-	1. return to use letsencrypt cert
+	1. will configure the remaining portion for TLS with letsencrypt later
 1. Configure quota
 	1. `nano /etc/fstab`
 		* add `,usrjquota=quota.user,grpjquota=quota.group,jqfmt=vfsv0` to the partition with mount point of `/`
@@ -281,15 +290,15 @@ Note that this has not been proofread or double checked, but should be good
 				* for the most part, these should/will be replaced with letsencrypt, so they PROBABLY don't matter? Still, try to answer them appropriately. As for the last couple questions about a challenge password and company name, you can skip those.
 
 
-1. run certbot for main site
+1. run certbot for main site (under suspension... skip for now)
 	* `certbot --apache`
-1. setup cron for certbot
+1. setup cron for certbot (under suspension... skip for now)
 	* `certbot renew --apache --dry-run` (i think? - to confirm automation working)
 	* `[randomMinValueNoBrackets] [randomHourValueNoBrackets] * * * /usr/bin/certbot renew --apache`
 1. pure-ftpd fixes:
 	1. `echo "42424 44242" > /etc/pure-ftpd/conf/PassivePortRange`
 		* This sets a range on the ports than can be used for passive connections. Now that you know the port range, you can continue using your firewall to safely open ports in that range.
-	1. `mkdir -p /etc/ssl/private/`
+	1. `mkdir -p /etc/ssl/private/` (this part is dependent on what happens with certbot above)
 	1. `cat /etc/letsencrypt/live/[domainnobrackets]/privkey.pem /etc/letsencrypt/live/[domainnobrackets]/fullchain.pem >> pure-ftpd.pem`
 	1. `/etc/init.d/pure-ftpd-mysql restart`
 1. confirm the following ports are open on firewall (not comprehensive)
