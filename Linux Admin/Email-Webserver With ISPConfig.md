@@ -1,7 +1,7 @@
 <!-- permalink: 97f703b7fb7623363cdf46bf23bf379b DO NOT DELETE OR EDIT THIS LINE -->
 # Setup an Email/Webserver/Jabber/DNS with ISPConfig On Debian 9
 
-Note that this has not been proofread or double checked, but should be good
+Note that this is fairly specific for Debian 9. The clamav component also appears to require that you run this on a server with at least 2 gigs of memory. (I had a 1 gig vm have clam crash after a few hours, requiring a reboot to get back up and running again. 2 gigs seems stable, but more is definitely better)
 
 1. Confirm hostname is correct:
 	1. `nano /etc/hosts`
@@ -42,7 +42,7 @@ Note that this has not been proofread or double checked, but should be good
 1. make sure to update packages before proceeding:
 	* `apt update && apt upgrade -y`
 1. Install the following packages (`apt install ...` ... yes it's a doozy)
-	* `ssh openssh-server nano dnsutils ntp postfix postfix-mysql postfix-doc mariadb-client mariadb-server openssl getmail4 rkhunter binutils dovecot-imapd dovecot-pop3d dovecot-mysql dovecot-sieve dovecot-lmtpd sudo amavisd-new spamassassin clamav clamav-daemon zoo unzip bzip2 arj nomarch lzop cabextract apt-listchanges libnet-ldap-perl libauthen-sasl-perl clamav-docs daemon libio-string-perl libio-socket-ssl-perl libnet-ident-perl zip libnet-dns-perl libdbd-mysql-perl postgrey git lua5.1 liblua5.1-0-dev lua-filesystem libidn11-dev libssl-dev lua-zlib lua-expat lua-event lua-bitop lua-socket lua-sec luarocks luarocks apache2 apache2-doc apache2-utils libapache2-mod-php libapache2-mod-fcgid apache2-suexec-pristine php-pear mcrypt imagemagick libruby libapache2-mod-python memcached php-memcache php-imagick php-gettext memcached libapache2-mod-passenger php-soap php php-common php-gd php-mysql php-imap phpmyadmin php-cli php-cgi php-mcrypt php-curl php-pspell php-recode php-sqlite3 php-tidy php-xmlrpc php-xsl php-intl php-zip php-mbstring certbot php-fpm php-opcache php-apcu pure-ftpd-common pure-ftpd-mysql quota quotatool bind9 dnsutils haveged webalizer awstats geoip-database libclass-dbi-mysql-perl libtimedate-perl build-essential autoconf automake libtool flex bison debhelper binutils fail2ban roundcube roundcube-core roundcube-mysql roundcube-plugins python-certbot-apache`
+	* `ssh openssh-server nano dnsutils ntp postfix postfix-mysql postfix-doc mariadb-client mariadb-server openssl getmail4 rkhunter binutils dovecot-imapd dovecot-pop3d dovecot-mysql dovecot-sieve dovecot-lmtpd sudo amavisd-new spamassassin clamav clamav-daemon zoo unzip bzip2 arj nomarch lzop cabextract apt-listchanges libnet-ldap-perl libauthen-sasl-perl clamav-docs daemon libio-string-perl libio-socket-ssl-perl libnet-ident-perl zip libnet-dns-perl libdbd-mysql-perl postgrey git lua5.1 liblua5.1-0-dev lua-filesystem libidn11-dev libssl-dev lua-zlib lua-expat lua-event lua-bitop lua-socket lua-sec luarocks luarocks apache2 apache2-doc apache2-utils libapache2-mod-php libapache2-mod-fcgid apache2-suexec-pristine php-pear mcrypt imagemagick libruby libapache2-mod-python memcached php-memcache php-imagick php-gettext memcached libapache2-mod-passenger php-soap php php-common php-gd php-mysql php-imap phpmyadmin php-cli php-cgi php-mcrypt php-curl php-pspell php-recode php-sqlite3 php-tidy php-xmlrpc php-xsl php-intl php-zip php-mbstring certbot php-fpm php-opcache php-apcu pure-ftpd-common pure-ftpd-mysql quota quotatool bind9 dnsutils haveged webalizer awstats geoip-database libclass-dbi-mysql-perl libtimedate-perl build-essential autoconf automake libtool flex bison debhelper binutils fail2ban roundcube roundcube-core roundcube-mysql roundcube-plugins`
 	* In no particular order, you will be asked the following questions about package configuration:
 		* email:
 			* type of mail configuration:
@@ -114,7 +114,7 @@ Note that this has not been proofread or double checked, but should be good
 	1. `service mysql restart`
 	1. if you want to confirm that it's running with networking
 		* `netstat -tulpn` and look for an entry for mysqld *LISTENING* on port 3306
-1. Stop *spamassassin* service (ispconfig just uses the libraries and the service is unecessary)
+1. Stop *spamassassin* service (ispconfig just uses the libraries and the service is unnecessary)
 	1. `service spamassassin stop`
 	1. `systemctl disable spamassassin`
 1. Configure Postfix:
@@ -224,7 +224,9 @@ Note that this has not been proofread or double checked, but should be good
 			[...]
 			```
 	1. `echo 1 > /etc/pure-ftpd/conf/TLS`
-	1. will configure the remaining portion for TLS with letsencrypt later
+	1. `echo "40000 45000" > /etc/pure-ftpd/conf/PassivePortRange`
+		* This sets a range on the ports than can be used for passive connections. Now that you know the port range, you can continue using your firewall to safely open ports in that range.
+	1. `/etc/init.d/pure-ftpd-mysql restart`
 1. Configure quota
 	1. `nano /etc/fstab`
 		* add `,usrjquota=quota.user,grpjquota=quota.group,jqfmt=vfsv0` to the partition with mount point of `/`
@@ -286,21 +288,82 @@ Note that this has not been proofread or double checked, but should be good
 		* you'll be asked a series of questions. Most of them are fairly obvious, but here are the ones I've deemed questionable:
 			* installation mode:
 				* *standard*
+			* set main page to use secure access/ssl (i don't remember the exact phrasing)
 			* certificate questions:
 				* for the most part, these should/will be replaced with letsencrypt, so they PROBABLY don't matter? Still, try to answer them appropriately. As for the last couple questions about a challenge password and company name, you can skip those.
 
+1. ControlPanel SSL (This section assumes you're server is properly networked at this point, can be accessed from the internet, and dns is configured) - [credit for this section](https://www.howtoforge.com/community/threads/securing-ispconfig-3-control-panel-port-8080-with-lets-encrypt-free-ssl.75554/)
+	1. if you haven't set up the control panel for secure access, you will need to run `ispconfig_update.sh`
+	1. create a site matching the FQDN of the server (*controlpanel.yourdomain.com* from the earlier example)
+	1. in the settings for the new site, turn on ssl with letsencrypt
+	1. Once it has setup the site and created the certificate, use the downloaded letsencrypt certificate to configure the control panel certificate
+		1. `cd /usr/local/ispconfig/interface/ssl/`
+		1. `mkdir $(date +"%y%m%d%H%M%S").bak`
+		1. `mv ispserver.* [the new folder that was just created no brackets]`
+		1. `ln -s /etc/letsencrypt/live/$(hostname -f)/fullchain.pem ispserver.crt`
+		1. `ln -s /etc/letsencrypt/live/$(hostname -f)/privkey.pem ispserver.key`
+		1. `cat ispserver.{key,crt} > ispserver.pem`
+		1. `chmod 600 ispserver.pem`
+	1. Configure *postfix*:
+		1. `cd /etc/postfix/`
+		1. `mv smtpd.cert smtpd.cert-$(date +"%y%m%d%H%M%S").bak`
+		1. `mv smtpd.key smtpd.key-$(date +"%y%m%d%H%M%S").bak`
+		1. `ln -s /usr/local/ispconfig/interface/ssl/ispserver.crt smtpd.cert`
+		1. `ln -s /usr/local/ispconfig/interface/ssl/ispserver.key smtpd.key`
+		1. `service postfix restart`
+		1. `service dovecot restart`
+	1. Configure *dovecot*:
+		1. `nano /etc/dovecot/dovecot.conf`
+		1. confirm the following exists in the file:
 
-1. run certbot for main site (under suspension... skip for now)
-	* `certbot --apache`
-1. setup cron for certbot (under suspension... skip for now)
-	* `certbot renew --apache --dry-run` (i think? - to confirm automation working)
-	* `[randomMinValueNoBrackets] [randomHourValueNoBrackets] * * * /usr/bin/certbot renew --apache`
-1. pure-ftpd fixes:
-	1. `echo "42424 44242" > /etc/pure-ftpd/conf/PassivePortRange`
-		* This sets a range on the ports than can be used for passive connections. Now that you know the port range, you can continue using your firewall to safely open ports in that range.
-	1. `mkdir -p /etc/ssl/private/` (this part is dependent on what happens with certbot above)
-	1. `cat /etc/letsencrypt/live/[domainnobrackets]/privkey.pem /etc/letsencrypt/live/[domainnobrackets]/fullchain.pem >> pure-ftpd.pem`
-	1. `/etc/init.d/pure-ftpd-mysql restart`
+			```
+			[...]
+			ssl_cert = </etc/postfix/smtpd.cert
+			ssl_key = </etc/postfix/smtpd.key
+			[...]
+			```
+		1. `service dovecot restart`
+		 	* only necessary if there were any changes
+	1. Configure *pure-ftpd*:
+		1. `cd /etc/ssl/private/`
+		1. `mv pure-ftpd.pem pure-ftpd.pem-$(date +"%y%m%d%H%M%S").bak`
+		1. `ln -s /usr/local/ispconfig/interface/ssl/ispserver.pem pure-ftpd.pem`
+		1. `chmod 600 pure-ftpd.pem`
+		1. `service pure-ftpd-mysql restart`
+	1. Automate the updates:
+		1. we will be installing a utility called *incron*. It's essentially cron, but instead of being activated by time intervals, it is activated by file modification or activity
+		1. `apt install -y incron`
+		1. `nano /etc/init.d/le_ispc_pem.sh`
+		1. copy/paste the following contents:
+
+			```
+			#!/bin/sh
+			### BEGIN INIT INFO
+			# Provides:  LE ISPSERVER.PEM AUTO UPDATER
+			# Required-Start:  $local_fs $network
+			# Required-Stop:  $local_fs
+			# Default-Start:  2 3 4 5
+			# Default-Stop:  0 1 6
+			# Short-Description:  LE ISPSERVER.PEM AUTO UPDATER
+			# Description:  Update ispserver.pem automatically after ISPC LE SSL certs are renewed.
+			### END INIT INFO
+			cd /usr/local/ispconfig/interface/ssl/
+			mv ispserver.pem ispserver.pem-$(date +"%y%m%d%H%M%S").bak
+			cat ispserver.{key,crt} > ispserver.pem
+			chmod 600 ispserver.pem
+			chmod 600 /etc/ssl/private/pure-ftpd.pem
+			service pure-ftpd-mysql restart
+			service postfix restart
+			service dovecot restart
+			service apache2 restart
+			```
+		1. `chmod +x /etc/init.d/le_ispc_pem.sh`
+		1. `echo "root" >> /etc/incron.allow`
+		1. `incrontab -e`
+		1. enter the following contents:
+			* `/etc/letsencrypt/archive/$(hostname -f)/ IN_MODIFY ./etc/init.d/le_ispc_pem.sh`
+		1. you might be able to get away with `service apache2 restart` or just `reboot` your server
+
 1. confirm the following ports are open on firewall (not comprehensive)
 	* `21`
 	* `22`
@@ -313,7 +376,7 @@ Note that this has not been proofread or double checked, but should be good
 	* `953`
 	* `993`
 	* `995`
-	* `42424:44242/tcp`
+	* `40000:45000/tcp`
 	* whatever you had the admin portal on (`8080` is default)
 
 
