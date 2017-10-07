@@ -3,9 +3,9 @@
 
 This is a collection of Perl snippets I've written or otherwise come across that I would like available for future reference.
 
+### Prints contents of a file
 ```
-
-sub showFileContents { ## Prints contents of a file
+sub showFileContents {
 	my $file = $_[0];
 	open FILE, "<$file";
 	my @hold = <FILE>;
@@ -14,14 +14,20 @@ sub showFileContents { ## Prints contents of a file
 	}
 	close FILE;
 }
+```
 
-sub printHeader { ## clears screen and then prints provided string
+### clears screen and then prints provided string
+```
+sub printHeader {
 	my $header = $_[0];
 	&runOnSystem("clear");
 	print "\n\n\t$header:\n\n";
 }
+```
 
-sub runOnSystem { ## executes system command and communicates to user what it's doing - be sure to be careful of arbitrary code execution
+### executes system command and communicates to user what it's doing - be sure to be careful of arbitrary code execution
+```
+sub runOnSystem {
 	my $command = $_[0];
 	my $debug = $_[1];
 	if ($debug) {
@@ -31,13 +37,19 @@ sub runOnSystem { ## executes system command and communicates to user what it's 
 		system("$command");
 	}
 }
+```
 
+### prompts user to press enter to continue
+```
 sub enterToContinue {
 	print "\nPress enter to continue...\n";
 	my $enter = <STDIN>;
 }
+```
 
-sub checkYn { ## provided a prompt, will ask user how to proceed, assuming YES and else opting yes
+### provided a prompt, will ask user how to proceed, assuming YES and else opting no
+```
+sub checkYn {
 	my $prompt = $_[0] . " [Y/n]:";
 	print "$prompt";
 	my $rVal = -1;
@@ -53,8 +65,11 @@ sub checkYn { ## provided a prompt, will ask user how to proceed, assuming YES a
 	}
 	return $rVal;
 }
+```
 
-sub checkyN { ## provided a prompt, will ask user how to proceed, assuming NO and else opting yes
+### provided a prompt, will ask user how to proceed, assuming NO and else opting yes
+```
+sub checkyN {
 	my $prompt = $_[0] . " [y/N]:";
 	print "$prompt";
 	my $rVal = -1;
@@ -70,14 +85,20 @@ sub checkyN { ## provided a prompt, will ask user how to proceed, assuming NO an
 	}
 	return $rVal;
 }
+```
 
+### gets the directory of the currently running script. note requirement
+```
 sub getExecutableDirectory {
 	## requires use Cwd 'abs_path';
 	my $fullPath = abs_path($0);
 	my $dirname  = dirname($fullPath);
 	return $dirname;
 }
+```
 
+### template for getting a timestamp string
+```
 sub getTimeStampString() {
 	($sec,$min,$hour,$mday,$mon,$year,$wday,$yday,$isdst) = localtime(time);
 
@@ -90,8 +111,11 @@ sub getTimeStampString() {
 	$string = "$year$mon$mday-$hour$min";
 	return $string;
 }
+```
 
-## this next one is a bit more specific, but should be easily adaptable
+### process arguments provided from command line
+this one is a bit more specific, but should be easily adaptable
+```
 sub processArguments {
 	$ranSomething = 0;
 	for (my $i = 0; $i < scalar(@ARGV); $i++) {
@@ -117,7 +141,10 @@ sub processArgument {
 		#$debug = 1;
 	}
 }
+```
 
+### check for a trailing slash in a string
+```
 sub checkTrailingSlash {
 	my $str = $_[0];
 	if ($str !~ /\/$/) {
