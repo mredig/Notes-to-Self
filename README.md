@@ -20,6 +20,3 @@ How to get the submodules to load their repositories
 		1. `git submodule update --remote --merge`
 		1. `git add [submodule directory]`
 		1. `git commit -m "updated submodules"`
-
-
-* this is an obvious edit - testing auto update
