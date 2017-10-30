@@ -43,6 +43,7 @@
 	* `nano -B /etc/samba/smb.conf`
 1. In the print section, match these settings:
 
+	```
 	# CUPS printing.  See also the cupsaddsmb(8) manpage in the
 	# cupsys-client package.
 	printing = cups
@@ -64,6 +65,7 @@
 	browseable = yes
 	read only = yes
 	guest ok = no
+	```
 
 1. Restart samba and setup client computers!
 	* `sudo /etc/init.d/samba restart`
