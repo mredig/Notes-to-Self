@@ -20,7 +20,7 @@
 	* example: `//192.168.1.36/myshare /media/myshare cifs credentials=/home/myname/credentials/samba.credentials`
 5. Make sure your fstab file is valid
  	* `mount -a` as root will mount everything in /etc/fstab
-6. If you have permissions trouble, you can add this to the options on the fstab line after the credentials file using commas to separate arguments
-	* `credentials=/path/to/credentials,file_mode=0664,dir_mode=0775,gid=adm`
+6. If you have permissions trouble, you can add this to the options on the fstab line after the credentials file using commas to separate arguments (this is specifically for the user and group named *lskywalker*)
+	* `credentials=/path/to/credentials,file_mode=0664,dir_mode=0775,uid=lskywalker,gid=lskywalker`
 1. Conecting to an Airport might require you to add `sec=ntlm` to the above arguments
 7. This share should be mounted on every boot now
