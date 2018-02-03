@@ -20,7 +20,7 @@ sub showFileContents {
 ```
 sub printHeader {
 	my $header = $_[0];
-	&runOnSystem("clear");
+	runOnSystem("clear");
 	print "\n\n\t$header:\n\n";
 }
 ```
@@ -87,6 +87,34 @@ sub checkyN {
 }
 ```
 
+### asks for user input, then returns the input with optional sanitization
+
+```
+sub userInput {
+	my $prompt = $_[0] . ":";
+	print "$prompt";
+	my $rVal;
+	while(!defined $rVal) {
+		chomp(my $userTyped = <STDIN>);
+		$rVal = sanitizeUserInput($userTyped);
+		if (!defined $rVal) {
+			print "Sorry, that's not valid input. Please try again:\n\n$prompt";
+		}
+	}
+	return $rVal;
+}
+
+sub sanitizeUserInput {
+	my ($userTyped) = @_;
+	## process $userTyped here - return undef if new input is required;
+	chomp($userTyped);
+	if ((length $userTyped) == 0) {
+	                undef $userTyped;
+	}
+	return $userTyped;
+}
+```
+
 ### gets the directory of the currently running script. note requirement
 ```
 sub getExecutableDirectory {
@@ -122,7 +150,7 @@ sub processArguments {
 		my $arg = $ARGV[$i];
 		if ($arg =~ /^-(\w)/) {
 			$arg = $1;
-			&processArgument($arg, $ARGV[$i + 1]);
+			processArgument($arg, $ARGV[$i + 1]);
 		}
 	}
 	if ($ranSomething == 0) {
@@ -136,7 +164,7 @@ sub processArgument {
 	if ($arg eq "c" && $nextArg ne "") { #maybe do -e
 		# most of these are examples as to how to use this code
 		# my $confFile = $nextArg;
-		# &loadConfFile($confFile);
+		# loadConfFile($confFile);
 	} elsif ($arg eq "d") {
 		#$debug = 1;
 	}
