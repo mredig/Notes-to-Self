@@ -227,6 +227,7 @@ Note that this is fairly specific for Debian 9. The clamav component also appear
 	1. `echo "40000 45000" > /etc/pure-ftpd/conf/PassivePortRange`
 		* This sets a range on the ports than can be used for passive connections. Now that you know the port range, you can continue using your firewall to safely open ports in that range.
 	1. `/etc/init.d/pure-ftpd-mysql restart`
+	1. Cert will be linked after ISPConfig is installed
 1. Configure quota
 	1. `nano /etc/fstab`
 		* add `,usrjquota=quota.user,grpjquota=quota.group,jqfmt=vfsv0` to the partition with mount point of `/`
