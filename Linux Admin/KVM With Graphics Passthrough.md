@@ -186,7 +186,7 @@ It is assumed you have hardware capable of doing hardware passthrough (IOMMU sup
 				* `KVM_HUGEPAGES=1`
 				* and reboot
 		1. the output should resemble:
-			```
+			* ```
 			Total System Memory: 15787 MB
 
 			Mount Point          Options
@@ -204,7 +204,7 @@ It is assumed you have hardware capable of doing hardware passthrough (IOMMU sup
 		1. reboot to let this take effect
 		1. run `hugeadm --explain` again
 			* you should see a section that says something like:
-			```
+			* ```
 			The recommended shmmax for your currently allocated huge pages is 13851688960 bytes.
 			To make shmmax settings persistent, add the following line to /etc/sysctl.conf:
 			  kernel.shmmax = 13851688960
@@ -214,32 +214,32 @@ It is assumed you have hardware capable of doing hardware passthrough (IOMMU sup
 		1. Finally, we need to set the VM to use the hugepages:
 			1. `virsh edit [name of vm no brackets]`
 			1. add this before the `<os>` tag
-			```
-			<memoryBacking>
-			  <hugepages/>
-			</memoryBacking>
-			```
+				* ```
+				<memoryBacking>
+				  <hugepages/>
+				</memoryBacking>
+				```
 			1. save and close the file
 			1. in the virtman gui, open the machine and click the *blue I* to edit the settings. Set the memory from *4096* to whatever value you actually wanted to dedicate for the VM (*12288* in my example case) and apply
 	1. fix nvidia code43 driver issue
 		1. before the NVidia card will work, we need to trick the driver into thinking it's NOT in a VM.
 		1. run `virsh edit [name of vm no brackets]` again
 		1. put these new entries inside the `<features>` tag (the `###########` can be any 12 hexadecimal characters, for example `123456790ab`)
-		```
-		...
-		<features>
-			<hyperv>
-				...
-				<vendor_id state='on' value='############'/>
-				...
-			</hyperv>
+			* ```
 			...
-			<kvm>
-			<hidden state='on'/>
-			</kvm>
-		</features>
-		...
-		```
+			<features>
+				<hyperv>
+					...
+					<vendor_id state='on' value='############'/>
+					...
+				</hyperv>
+				...
+				<kvm>
+				<hidden state='on'/>
+				</kvm>
+			</features>
+			...
+			```
 		1. save, exit and boot up the VM. Within the VM, go to NVidia's site and download and install drivers. If it doesn't work right away, a VM reboot should get the video card working!
 
 ### Further configurations
