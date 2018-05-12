@@ -13,7 +13,7 @@ I am probably missing some steps in this overview - I used these resources:
 
 
 ### Prerequisite
-It is assumed you have hardware capable of doing hardware passthrough (IOMMU support on motherboard and processer) and multiple graphics cards (typically onboard + dedicated). My setup is Intel processer with onboard for Linux and NVidia 1050 Ti for Windows VM. I am running ubuntu 18.04 LTS as a hypervisor and Windows 10 as a VM. For simplicity, I will be ignoring any AMD variations. It will be similar and likely found through the links listed above. Obviously you also need enough hardware capabilities to handle both the host OS and the VM (lots of RAM and multi core processor essentially).
+It is assumed you have hardware capable of doing hardware passthrough (IOMMU support on motherboard and processor) and multiple graphics cards (typically onboard + dedicated). My setup is Intel processor with onboard for Linux and NVidia 1050 Ti for Windows VM. I am running Ubuntu 18.04 LTS as a hypervisor and Windows 10 as a VM. For simplicity, I will be ignoring any AMD variations. It will be similar and likely found through the links listed above. Obviously you also need enough hardware capabilities to handle both the host OS and the VM (lots of RAM and multi core processor essentially).
 
 
 ### Required Downloads
@@ -31,14 +31,14 @@ It is assumed you have hardware capable of doing hardware passthrough (IOMMU sup
 	1. edit your grub file (`nano -B /etc/default/grub`) to have the the `GRUB_CMDLINE_LINUX_DEFAULT` setting read `GRUB_CMDLINE_LINUX_DEFAULT="modprobe.blacklist=nouveau quiet splash intel_iommu=on"`
 		* this will both enable virtualization and disable loading NVidia drivers so that the video card is available to the VM later
 	1. save and exit
-	1. run `sudo update-grub`
+	1. run `update-grub`
 1. Reboot and confirm it's working:
 	* `dmesg | grep -i "Directed I/O"`
 	* should get a result similar to `[    0.754554] DMAR: Intel(R) Virtualization Technology for Directed I/O`
 	* ***If this is not working, there is no point in continuing. Either fix it or give it up!***
 1. Once that's confirmed, continue with the KVM and other utilities installation:
-	1. `sudo apt update && sudo apt upgrade`
-	1. `sudo apt install qemu-kvm seabios qemu-utils cpu-checker hugepages ovmf`
+	1. `apt update && apt upgrade`
+	1. `apt install qemu-kvm seabios qemu-utils cpu-checker hugepages ovmf`
 1. Set up passthrough:
 	1. Get a list of the PCI devices to passthrough:
 		1. `lspci | grep VGA`
