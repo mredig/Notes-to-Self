@@ -148,8 +148,8 @@ It is assumed you have hardware capable of doing hardware passthrough (IOMMU sup
 		  <target dev='vdb' bus='virtio'/>
 		</disk>
 		```
-	1. Attach the *Windows Installer ISO* to the CD drive?
 	1. Add a second CD Drive and attach the downloaded virtio iso from earlier
+		* note that even though the first CD drive appear empty, KVM will automatically use it to attach the Windows installer ISO when you click the *Begin Installation* button
 	1. Set the network card to use *VirtIO* for *device model*
 	1. Add hardware for the video card as PCI Host Device (both the video card and sound portions)
 		* ![pci devices](img/kvm-pcidevices.png)
