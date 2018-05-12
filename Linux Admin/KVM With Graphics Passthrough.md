@@ -130,6 +130,7 @@ It is assumed you have hardware capable of doing hardware passthrough (IOMMU sup
 		* set cpus to total cores -1 (I have 4 cores, I set to 3)
 		* create a disk image (I used qcow2) or link to a physical disk. If you create a raw disk, you will get better performance
 		* set the network how you want. NAT is easy mode (that's what I've done so far, but will be editing that later)
+		* name the VM and note what you name it
 		* before you finish, check the `Customize configuration before install` box
 	1. When you get the customization page, set to UEFI for bios and apply changes:
 		* ![uefi](img/kvm-overview.png)
@@ -188,23 +189,56 @@ It is assumed you have hardware capable of doing hardware passthrough (IOMMU sup
 			...
 			```
 		1. our takeaway from this is the pagesize (2M) and minimum, current, and maximum values - we need to set them to something other than 0
-		1. Our formula is (*amount of ram we want to set for VM (12288M)* / *hugepage size (2M)*) * (1.075) = *6605*
+		1. Our formula is (*amount of ram we want to set for VM (12288M)* / *hugepage size (2M)*) \* (1.075) = *6605*
 			* change this formula to match your desired value and pagesize, then put your result in `/etc/sysctl.conf` with a line like:
 				* `vm.nr_hugepages = 6605`
 		1. reboot to let this take effect
 		1. run `hugeadm --explain` again
+			* you should see a section that says something like:
+			```
+			The recommended shmmax for your currently allocated huge pages is 13851688960 bytes.
+			To make shmmax settings persistent, add the following line to /etc/sysctl.conf:
+			  kernel.shmmax = 13851688960
+			```
+		1. edit `/etc/sysctl.conf` and add the line it requested
+		1. `hugeadm --set-recommended-shmmax` to set it for now without rebooting
+		1. Finally, we need to set the VM to use the hugepages:
+			1. `virsh edit [name of vm no brackets]`
+			1. add this before the `<os>` tag
+			```
+			<memoryBacking>
+			  <hugepages/>
+			</memoryBacking>
+			```
+			1. save and close the file
+			1. in the virtman gui, open the machine and click the *blue I* to edit the settings. Set the memory from *4096* to whatever value you actually wanted to dedicate for the VM (*12288* in my example case) and apply
 	1. fix nvidia code43 driver issue
+		1. before the NVidia card will work, we need to trick the driver into thinking it's NOT in a VM.
+		1. run `virsh edit [name of vm no brackets]` again
+		1. put these new entries inside the `<features>` tag (the `###########` can be any 12 hexadecimal characters, for example `123456790ab`)
+		```
+		...
+		<features>
+			<hyperv>
+				...
+				<vendor_id state='on' value='############'/>
+				...
+			</hyperv>
+			...
+			<kvm>
+			<hidden state='on'/>
+			</kvm>
+		</features>
+		...
+		```
+		1. save, exit and boot up the VM. Within the VM, go to NVidia's site and download and install drivers. If it doesn't work right away, a VM reboot should get the video card working!
+
+### Further configurations
+* you're on your own from here. I'd suggest looking over the resources I linked earlier as they have suggestions for fixing further issues and providing more conveniences
 
 
-
-
-
-
-
-
-
-
+### Troubleshooting
 
 1. Once running, if your VM BSODs with the error `KMODE_EXCEPTION_NOT_HANDLED` when launching some games, add this line in `/etc/modprobe.d/kvm.conf`:
-		* `options kvm ignore_msrs=1`
-		* This CAN break things, so only do it if necessary!
+	* `options kvm ignore_msrs=1`
+	* This CAN break things, so only do it if necessary!
