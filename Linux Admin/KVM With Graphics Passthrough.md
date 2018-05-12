@@ -139,6 +139,14 @@ It is assumed you have hardware capable of doing hardware passthrough (IOMMU sup
 			* when you do that, be sure to set the current allocation to the proper value again if it changes
 		* ![CPUs page](img/kvm-CPUs.png)
 	1. If you are using a disk image, set the disk bus to VirtIO (this will change the *IDE Disk* to *VirtIO Disk* in the menu)
+		* Alternatively, if you want to dedicate an entire drive to the guest, you will need to use the following template to enter into the xml file in the `<devices>` section (`virsh edit [vmname]` - more thorough instructions are listed later in this document) - obviously change the path variables to match your settings
+		```
+		<disk type='block' device='disk'>
+		  <driver name='qemu' type='raw'/>
+		  <source dev='/dev/sdc3'/>
+		  <target dev='vdb' bus='virtio'/>
+		</disk>
+		```
 	1. Attach the *Windows Installer ISO* to the CD drive?
 	1. Add a second CD Drive and attach the downloaded virtio iso from earlier
 	1. Set the network card to use *VirtIO* for *device model*
