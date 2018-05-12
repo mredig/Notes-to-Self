@@ -42,23 +42,23 @@ It is assumed you have hardware capable of doing hardware passthrough (IOMMU sup
 	1. Get a list of the PCI devices to passthrough:
 		1. `lspci | grep VGA`
 		1. I got these in my output:
-		```
-			00:02.0 VGA compatible controller: Intel Corporation Xeon E3-1200 v3/4th Gen Core Processor Integrated Graphics Controller (rev 06)
-			01:00.0 VGA compatible controller: NVIDIA Corporation GP107 [GeForce GTX 1050 Ti] (rev a1)
-		```
+			* ```
+				00:02.0 VGA compatible controller: Intel Corporation Xeon E3-1200 v3/4th Gen Core Processor Integrated Graphics Controller (rev 06)
+				01:00.0 VGA compatible controller: NVIDIA Corporation GP107 [GeForce GTX 1050 Ti] (rev a1)
+			```
 		1. We need to isolate the NVidia card, so we use the number ID at the beginning to make our next call:
 			* `lspci -nn | grep 01:00.`
 		1. This gives me this output:
-		```
-			01:00.0 VGA compatible controller [0300]: NVIDIA Corporation GP107 [GeForce GTX 1050 Ti] [10de:1c82] (rev a1)
-			01:00.1 Audio device [0403]: NVIDIA Corporation GP107GL High Definition Audio Controller [10de:0fb9] (rev a1)
-		```
+			* ```
+				01:00.0 VGA compatible controller [0300]: NVIDIA Corporation GP107 [GeForce GTX 1050 Ti] [10de:1c82] (rev a1)
+				01:00.1 Audio device [0403]: NVIDIA Corporation GP107GL High Definition Audio Controller [10de:0fb9] (rev a1)
+			```
 		1. Note the IDs in brackets: `10de:1c82` and `10de:0fb9` - we will need to tell **pci-stub** to capture these at boot so that they are available to pass to the video card to the VM
 		1. We will update our grub line from earlier to read this now (insert your own IDs obviously):
 			* `GRUB_CMDLINE_LINUX_DEFAULT="modprobe.blacklist=nouveau quiet splash intel_iommu=on pci-stub.ids=10de:1c82,10de:0fb9"`
 	1. Set drivers to load:
 		1. edit `/etc/initramfs-tools/modules` and add this to the end of the file:
-			```
+			* ```
 			pci-stub
 			vfio
 			vfio_iommu_type1
@@ -72,7 +72,7 @@ It is assumed you have hardware capable of doing hardware passthrough (IOMMU sup
 1. Check everything loaded correctly:
 	1. `lsmod | grep vfio`
 		* Output should resemble:  
-		```
+		* ```
 		vfio_pci               45056  0
 		vfio_virqfd            16384  1 vfio_pci
 		irqbypass              16384  2 kvm,vfio_pci
@@ -81,7 +81,7 @@ It is assumed you have hardware capable of doing hardware passthrough (IOMMU sup
 		```
 	1. `dmesg | grep pci-stub`
 		* Output should resemble:  
-		```
+		* ```
 		[    0.000000] Command line: BOOT_IMAGE=/boot/vmlinuz-4.15.0-20-generic root=UUID=be3fcb78-a978-42b3-8645-d0eecca915c0 ro modprobe.blacklist=nouveau quiet splash intel_iommu=on pci-stub.ids=10de:1c82,10de:0fb9 vt.handoff=1
 		[    0.000000] Kernel command line: BOOT_IMAGE=/boot/vmlinuz-4.15.0-20-generic root=UUID=be3fcb78-a978-42b3-8645-d0eecca915c0 ro modprobe.blacklist=nouveau quiet splash intel_iommu=on pci-stub.ids=10de:1c82,10de:0fb9 vt.handoff=1
 		[    3.510239] pci-stub: add 10DE:1C82 sub=FFFFFFFF:FFFFFFFF cls=00000000/00000000
@@ -100,22 +100,21 @@ It is assumed you have hardware capable of doing hardware passthrough (IOMMU sup
 		[10904.478002] pci-stub 0000:01:00.1: claimed by stub
 		[67840.033312] pci-stub 0000:01:00.0: claimed by stub
 		[67840.053308] pci-stub 0000:01:00.1: claimed by stub
-
 		```
 	1. `dmesg | grep VFIO`
 		* Output should resemble:
-		```
+		* ```
 		[    3.512148] VFIO - User Level meta-driver version: 0.3
 		```
 	1. `kvm-ok`
 		* Output should resemble:
-		```
+		* ```
 		INFO: /dev/kvm exists
 		KVM acceleration can be used
 		```
 	1. `lsmod | grep kvm`
 		* Output should resemble:
-		```
+		* ```
 		kvm_intel             204800  0
 		kvm                   593920  1 kvm_intel
 		irqbypass              16384  2 kvm,vfio_pci
@@ -140,13 +139,14 @@ It is assumed you have hardware capable of doing hardware passthrough (IOMMU sup
 		* ![CPUs page](img/kvm-CPUs.png)
 	1. If you are using a disk image, set the disk bus to VirtIO (this will change the *IDE Disk* to *VirtIO Disk* in the menu)
 		* Alternatively, if you want to dedicate an entire drive to the guest, you will need to use the following template to enter into the xml file in the `<devices>` section (`virsh edit [vmname]` - more thorough instructions are listed later in this document) - obviously change the path variables to match your settings
-		```
+		* ```
 		<disk type='block' device='disk'>
 		  <driver name='qemu' type='raw'/>
 		  <source dev='/dev/sdc3'/>
 		  <target dev='vdb' bus='virtio'/>
 		</disk>
 		```
+		* [source](http://ronaldevers.nl/2012/10/14/adding-a-physical-disk-kvm-libvirt.html)
 	1. Add a second CD Drive and attach the downloaded virtio iso from earlier
 		* note that even though the first CD drive appear empty, KVM will automatically use it to attach the Windows installer ISO when you click the *Begin Installation* button
 	1. Set the network card to use *VirtIO* for *device model*
