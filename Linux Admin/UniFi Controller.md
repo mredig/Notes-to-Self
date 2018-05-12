@@ -1,3 +1,4 @@
+<!-- permalink: e9c088cd827925ff4b9ae26e44b0cb73 DO NOT DELETE OR EDIT THIS LINE -->
 # Linux UniFi Controller configuration
 
 

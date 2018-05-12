@@ -1,3 +1,4 @@
+<!-- permalink: 2b13a193c528f91de97bdcbb155f7670 DO NOT DELETE OR EDIT THIS LINE -->
 # Linux VLAN Interface Configuration
 
 1. If not already installed, install:

@@ -1,3 +1,4 @@
+<!-- permalink: ba509ba4bf3e2f327d949e95e594b299 DO NOT DELETE OR EDIT THIS LINE -->
 # KVM With Graphics Card Passthrough
 
 
