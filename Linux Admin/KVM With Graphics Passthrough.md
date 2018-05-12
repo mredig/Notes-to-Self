@@ -187,15 +187,15 @@ It is assumed you have hardware capable of doing hardware passthrough (IOMMU sup
 				* and reboot
 		1. the output should resemble:
 			* ```
-			Total System Memory: 15787 MB
+				Total System Memory: 15787 MB
 
-			Mount Point          Options
-			/dev/hugepages       rw,relatime,pagesize=2M
+				Mount Point          Options
+				/dev/hugepages       rw,relatime,pagesize=2M
 
-			Huge page pools:
-			Size Minimum Current Maximum Default
-			2097152 0 0 0 *
-			...
+				Huge page pools:
+				Size Minimum Current Maximum Default
+				2097152 0 0 0 *
+				...
 			```
 		1. our takeaway from this is the pagesize (2M) and minimum, current, and maximum values - we need to set them to something other than 0
 		1. Our formula is (*amount of ram we want to set for VM (12288M)* / *hugepage size (2M)*) \* (1.075) = *6605*
