@@ -201,6 +201,7 @@ It is assumed you have hardware capable of doing hardware passthrough (IOMMU sup
 		1. Our formula is (*amount of ram we want to set for VM (12288M)* / *hugepage size (2M)*) \* (1.075) = *6605*
 			* change this formula to match your desired value and pagesize, then put your result in `/etc/sysctl.conf` with a line like:
 				* `vm.nr_hugepages = 6605`
+				* side note - after using this for a couple days, I found that granting 12GB+buffer to the VM with 16GB total in the system didn't leave much for me to do anything useful in Ubuntu, so I lowered the value to 10GB/5504 hugepages
 		1. reboot to let this take effect
 		1. run `hugeadm --explain` again
 			* you should see a section that says something like:
