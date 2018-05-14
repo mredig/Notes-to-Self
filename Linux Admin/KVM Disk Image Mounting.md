@@ -1,3 +1,4 @@
+<!-- permalink: b1828aec0770c1a3a932443881d2d101 DO NOT DELETE OR EDIT THIS LINE -->
 # KVM Disk Image Mounting
 
 This is might be specific to qcow2 image files.
