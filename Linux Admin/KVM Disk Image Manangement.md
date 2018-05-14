@@ -26,3 +26,6 @@ This is might be specific to qcow2 image files.
 
 ### Shrink Qcow2 Disk Image
 * TBD
+	* [1](https://serverfault.com/questions/432119/is-there-any-way-to-shrink-qcow2-image-without-converting-it-raw) look into virt-sparsify
+	* [2](https://pve.proxmox.com/wiki/Shrink_Qcow2_Disk_Files#Shrink_the_Disk_File) - less efficient, but more stable?
+	* [3](https://www.jamescoyle.net/how-to/323-reclaim-disk-space-from-a-sparse-image-file-qcow2-vmdk) - alt zeroing method
