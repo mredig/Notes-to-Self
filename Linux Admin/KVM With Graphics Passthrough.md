@@ -220,6 +220,7 @@ It is assumed you have hardware capable of doing hardware passthrough (IOMMU sup
 			* Proceed with the install and once you get to the desktop, shut the VM down.
 1. Final configurations
 	1. setup hugepages
+		1. **I ended up disabling hugepages as it is a constant reservation of memory specifically FOR the VM. That ultimately means that I didn't have 10ish GB usable, even when the VM was off, and that was a pretty big hit when using Ubuntu. In my one test, just making sure there was enough memory to boot the VM, I didn't notice any performance hit. That is, of course, subjective.** I am therefore going to declare hugepages as highly optional.
 		1. `hugeadm --explain`
 			* if you get `hugeadm:ERROR: No hugetlbfs mount points found`, edit `/etc/default/qemu-kvm` to either add or uncomment this line:
 				* `KVM_HUGEPAGES=1`
