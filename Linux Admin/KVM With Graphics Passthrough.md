@@ -39,6 +39,9 @@ It is assumed you have hardware capable of doing hardware passthrough (IOMMU sup
 1. Once that's confirmed, continue with the KVM and other utilities installation:
 	1. `apt update && apt upgrade`
 	1. `apt install qemu-kvm seabios qemu-utils cpu-checker hugepages ovmf`
+	1. This may not be necessary, but I also added my non root user to these groups (should allow for VM management without root privs):
+		* `adduser username libvirt`
+		* `adduser username libvirt-qemu`
 1. Set up passthrough:
 	1. Get a list of the PCI devices to passthrough:
 		1. `lspci | grep VGA`
