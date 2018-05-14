@@ -1,6 +1,9 @@
 <!-- permalink: b1828aec0770c1a3a932443881d2d101 DO NOT DELETE OR EDIT THIS LINE -->
-# KVM Disk Image Mounting
+# KVM Disk Image Management
 
+
+
+### Mount Disk Image in Linux
 This is might be specific to qcow2 image files.
 
 ***DO NOT*** mount the disk image in read/write mode while the VM is running!
@@ -15,3 +18,11 @@ This is might be specific to qcow2 image files.
 	* use `guestmount -a /path/to/qcow2/image -m <device> --ro /mnt/guestIMG` to make it read only (which would allow you to mount while the VM is running)
 1. Unmount it when finished:
 	* `guestmount /mnt/guestIMG`
+1. [resource](http://ask.xmodulo.com/mount-qcow2-disk-image-linux.html)
+
+
+### Resize Qcow2 Disk Image
+* TBD
+
+### Shrink Qcow2 Disk Image
+* TBD
