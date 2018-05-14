@@ -2,6 +2,10 @@
 # KVM Disk Image Management
 
 
+### Convert Disk Image Formats
+1. With qemu installed, this works. In this example, converting from a *VDI VirtualBox* format to *Qcow2*. Note that that is -O (capital O) not -0 (zero)
+	* `qemu-img convert -f vdi -O qcow2 ubuntu.vdi ubuntu.qcow2`
+
 
 ### Mount Disk Image in Linux
 This is might be specific to qcow2 image files.
