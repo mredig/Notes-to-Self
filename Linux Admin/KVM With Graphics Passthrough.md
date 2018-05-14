@@ -7,6 +7,7 @@ I am probably missing some steps in this overview - I used these resources:
 
 * started using this, but ran into issues running script to capture video card passthrough (device not found or something) [starter info](https://heiko-sieger.info/running-windows-10-on-linux-using-kvm-with-vga-passthrough/#Part_1_8211_Hardware_Requirements)
 * used this [pci-stub method](https://davidyat.es/2016/09/08/gpu-passthrough/) | [part2](https://davidyat.es/2016/09/08/gpu-passthrough/#part-1-setting-up-passthrough) | [part 3](https://davidyat.es/2016/09/08/gpu-passthrough/#part-2-setting-up-the-vm)
+* [network setup](https://wiki.ubuntu.com/KvmWithBridge)
 * [code 43 fix](https://wiki.archlinux.org/index.php/PCI_passthrough_via_OVMF#.22Error_43:_Driver_failed_to_load.22_on_Nvidia_GPUs_passed_to_Windows_VMs)
 	* this is a failure for windows to load the nvidia drivers - I believe this traces back to nvidia changing their end user licensing policy to disallow using their hardware in VMs or something like that. Google will know more than me here.
 * [created vm in gui with this](https://vfio.blogspot.co.za/2015/05/vfio-gpu-how-to-series-part-4-our-first.html) (linked through one of the earlier links as well)
@@ -123,6 +124,41 @@ It is assumed you have hardware capable of doing hardware passthrough (IOMMU sup
 		kvm                   593920  1 kvm_intel
 		irqbypass              16384  2 kvm,vfio_pci
 		```
+1. Set up networking
+	1. If you just want to do easy mode, you can just choose NAT when you create the VM. This, however, will isolate the VM from your network, so if you want to do something on the order of hosting a game server or push content to a Chromecast/Steamlink device, you will need to set up bridging as that will allow your VM to access the network directly.
+	1. **Note that this method requires a wired connection - there are apparently ways to set up WLAN connections, but I have not done it and won't be covering it here. There should be a link in one of the resources above.**
+	1. First, you need to identify your network device. Do that with `ip a` - output should resemble this:
+		* ```
+		1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
+		    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+		    inet 127.0.0.1/8 scope host lo
+		       valid_lft forever preferred_lft forever
+		    inet6 ::1/128 scope host
+		       valid_lft forever preferred_lft forever
+		2: enp0s25: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP group default qlen 1000
+		    link/ether de:ad:be:ef:ca:fe brd ff:ff:ff:ff:ff:ff
+		    inet 192.168.1.124/24 brd 192.168.1.255 scope global dynamic noprefixroute enp0s25
+		       valid_lft 86369sec preferred_lft 86369sec
+		3: virbr0: <NO-CARRIER,BROADCAST,MULTICAST,UP> mtu 1500 qdisc noqueue state DOWN group default qlen 1000
+		    link/ether 52:ad:52:17:5f:de brd ff:ff:ff:ff:ff:ff
+		    inet 192.168.142.1/24 brd 192.168.142.255 scope global virbr0
+		       valid_lft forever preferred_lft forever
+		4: virbr0-nic: <BROADCAST,MULTICAST> mtu 1500 qdisc fq_codel master virbr0 state DOWN group default qlen 1000
+		    link/ether 52:54:30:17:7c:ad brd ff:ff:ff:ff:ff:ff
+		```
+	1. ignore `lo` and anything that starts with `vir` - in this case, that leaves `enp0s25`. If you have multiple NICs, you'll want the one that actually has an IP address assigned to it.
+	1. You will need to edit your `/etc/network/interfaces` file to look like this (of course, replace `enp0s25` with whatever your value is):
+		* ```
+		# interfaces(5) file used by ifup(8) and ifdown(8)
+		auto lo
+		iface lo inet loopback
+		auto br0
+		iface br0 inet dhcp
+		        bridge_ports enp0s25
+		        bridge_stp off
+		        bridge_maxwait 5
+		```
+	1. from here, you either need to run `ifup br0` (`br0` is the bridge interface we just created) OR simply `reboot`. I opted to reboot.
 1. Create the VM - assuming everything went well above
 	1. Open the virtman GUI
 		* ![virtman](img/kvm-virtman.png)
@@ -132,7 +168,7 @@ It is assumed you have hardware capable of doing hardware passthrough (IOMMU sup
 		* set ram to `4096`
 		* set cpus to total cores -1 (I have 4 cores, I set to 3)
 		* create a disk image (I used qcow2) or link to a physical disk. If you create a raw disk, you will get better performance
-		* set the network how you want. NAT is easy mode (that's what I've done so far, but will be editing that later)
+		* set the network how you want. Choose the *bridge br0* option if you set up bridging earlier, otherwise just choose NAT for easy mode.
 		* name the VM and note what you name it
 		* before you finish, check the `Customize configuration before install` box
 	1. When you get the customization page, set to UEFI for bios and apply changes:
