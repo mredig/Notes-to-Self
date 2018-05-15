@@ -26,7 +26,9 @@ This is might be specific to qcow2 image files.
 
 
 ### Resize Qcow2 Disk Image
-* TBD
+1. `qemu-img resize diskImage.qcow2 +5G`
+	* [resource](https://www.randomhacks.co.uk/how-to-resize-a-qcow2-harddrive-images/)
+1. after that, launch the VM and resize partitions
 
 ### Shrink Qcow2 Disk Image
 1. `virt-sparsify bloatedDiskImage.ext outputShrunkDiskImage.ext`
