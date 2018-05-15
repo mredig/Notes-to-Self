@@ -29,7 +29,12 @@ This is might be specific to qcow2 image files.
 * TBD
 
 ### Shrink Qcow2 Disk Image
-* TBD
-	* [1](https://serverfault.com/questions/432119/is-there-any-way-to-shrink-qcow2-image-without-converting-it-raw) look into virt-sparsify
-	* [2](https://pve.proxmox.com/wiki/Shrink_Qcow2_Disk_Files#Shrink_the_Disk_File) - less efficient, but more stable?
-	* [3](https://www.jamescoyle.net/how-to/323-reclaim-disk-space-from-a-sparse-image-file-qcow2-vmdk) - alt zeroing method
+1. `virt-sparsify bloatedDiskImage.ext outputShrunkDiskImage.ext`
+	* this appears to support `qcow2`, `vdi`, and `raw` (`img` I think?)
+	* Conjecture - I think if you have a `qcow2` image you can use `--in-place` to avoid having to create a second image
+	* [more info](http://libguestfs.org/virt-sparsify.1.html)
+	* Alternatives
+		* [1](https://serverfault.com/questions/432119/is-there-any-way-to-shrink-qcow2-image-without-converting-it-raw) look into virt-sparsify
+		* [2](https://pve.proxmox.com/wiki/Shrink_Qcow2_Disk_Files#Shrink_the_Disk_File) - less efficient, but more stable?
+		* [3](https://www.jamescoyle.net/how-to/323-reclaim-disk-space-from-a-sparse-image-file-qcow2-vmdk) - alt zeroing method
+1. Be sure to test the resulting image before deleting the original
