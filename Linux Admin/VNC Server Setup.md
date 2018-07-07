@@ -13,6 +13,7 @@
 	* `-auth guess` - easy mode
 	* `-auth /var/gdm/:0.Xauth`
 		* run `ps wwaux | grep auth` and look for the string after `-auth` to get the actual location of the xauth file
+	* [this forum post](https://ubuntuforums.org/showthread.php?t=363236) might be helpful in turning this into a service to run in the background and not just manually run. However, make sure you up the security first!
 
 
 
