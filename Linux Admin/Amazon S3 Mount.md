@@ -1,3 +1,4 @@
+<!-- permalink: 840106fc4df86b3da878b03fd1d9160d DO NOT DELETE OR EDIT THIS LINE -->
 # Amazon S3 Mount
 
 This will allow you to mount S3 (both Amazon and third parties) buckets as local storage in Linux.
