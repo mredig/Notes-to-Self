@@ -8,10 +8,11 @@
 1. Install server
 	* `sudo apt-get install x11vnc vnc4server`
 1. Start server for one session
-	* `sudo x11vnc -display :0`
+	* `sudo x11vnc -display :0` - the same display as is shown on the server's local monitor.
 1. Possible arguments
+	* `-auth guess` - easy mode
 	* `-auth /var/gdm/:0.Xauth`
-	* `-auth guess` - useful
+		* run `ps wwaux | grep auth` and look for the string after `-auth` to get the actual location of the xauth file
 
 
 
