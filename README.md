@@ -10,6 +10,7 @@ If you are reading this from the demo site, this is the GitHub [note source](htt
 
 ### load scripts
 Note that the scripts aren't necessary - they directly relate to topics covered in these notes, but aren't necessary to the notes themselves.
+Scripts can be found in the [assistant scripts](https://github.com/mredig/assistant_scripts) repository.
 
 How to get the submodules to load their repositories
 * `git submodule init`
