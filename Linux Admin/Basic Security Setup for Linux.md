@@ -1,6 +1,8 @@
 <!-- permalink: c716ef85197d7b5aeb5db8a7a1bd58a9 DO NOT DELETE OR EDIT THIS LINE -->
 # Linux Security Prep List
 
+A scripted implementation of this advice can be found in the [assistance scripts](https://github.com/mredig/assistant_scripts) repo.
+
 * Automatic Upgrades
 	* install [unattended upgrades](https://wiki.debian.org/UnattendedUpgrades)
 	* `apt-get install unattended-upgrades`
