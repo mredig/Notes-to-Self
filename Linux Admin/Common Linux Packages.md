@@ -34,3 +34,11 @@ Most of these will just work following `sudo apt-get install`, but some will hav
 	* `unattended-upgrades`
 * VNC
 	* `x11vnc vnc4server`
+
+Other repositories:
+
+* [Webmin](http://www.webmin.com/deb.html)
+	* `echo 'deb https://download.webmin.com/download/repository sarge contrib' > /etc/apt/sources.list.d/webmin.list`
+	* `wget http://www.webmin.com/jcameron-key.asc`
+	* `apt-key add jcameron-key.asc`
+	* `apt update && apt install webmin`
