@@ -1,6 +1,9 @@
 <!-- permalink: 9e9445e7de08ebc4e804416572bbf781 DO NOT DELETE OR EDIT THIS LINE -->
 # Docker Stuff
 
+* install docker
+	* `curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh`
+
 * vocab
 	* *image* - read only - it is just the source blob that a container is created from
 	* *container* - the executing image that can be written to and used (but treat it as if it is ephemeral)
