@@ -2,8 +2,9 @@
 # Creating SSH key files for passwordless login
 
 ###Client Machine
-1. On client machine, run `ssh-keygen -t rsa -b 4096`
+1. On client machine, run `ssh-keygen -t rsa -b 4096 -C user@computername`
 	* This is very secure
+	* for `-C`, it'll help you ID the public key when it's on other computers later (usually best to do user@computername or something)
 2. It'll ask you where to save it. By default it'll be a file named `id_rsa` stored in `~/.ssh` - Be sure that if you want a different file name, you type out the whole path of its destination.
 3. You can add a password if you want, but I haven't experimented with how it implements this much.
 4. After generation, it'll also have created a sister file called `id_rsa.pub`. This is your public key. Somehow get the contents of that file to the server.

@@ -16,7 +16,7 @@ A scripted implementation of this advice can be found in the [assistance scripts
 	* `adduser example_user sudo`
 * Remove default user account (if applicable eg pi)
 	* `deluser --remove-home <username>`
-* [Create *ssh key auth*](ssh_keyfile.md)
+* [Create *ssh key auth*](permalink.php?perma=16d5905a76daf3851e4d3eed5bdb1fe4)
 * ssh config settings */etc/ssh/sshd_config*
 	* `PermitRootLogin no`
 	* `PasswordAuthentication no`
