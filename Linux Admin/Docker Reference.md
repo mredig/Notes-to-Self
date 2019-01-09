@@ -15,9 +15,10 @@
 
 ### Containers
 * Create a container and run it
-	* `docker run -d --rm --name [createANameHere] --network [networkName] [image-name] [commandToRun]`
+	* `docker run -d --rm -p 8080:80 --name [createANameHere] --network [networkName] [image-name] [commandToRun]`
 	* `-d` means *detach* and will run it in the background
 	* `--rm` will delete the container after it has stopped
+	* `-p [containerPort]:[hostPort]` connects the port on the host the port on the container **NOTE** this can (and DOES in the case of ufw) override firewall settings! only use for services you want exposed on the host's network! (use `docker network` for internal communication between containers) 
 	* `--network` and its followup argument is optional, but recommended for production (more on networks below)
 
 * List containers
@@ -60,7 +61,34 @@
 
 ### Dockerfile
 used to create docker images
-tbd
+
+* a very basic *dockerfile* looks like this:
+
+		FROM [upstreamImageName]
+		MAINTAINER Your Name (email@address.com)
+		RUN [commandToRunDuringImageSetup]
+		COPY [local file or directory] [/path/to/a/conf/directory/in/image]
+		ENTRYPOINT ["command" , "arg1", "arg2", "..."] #brackets actually used here
+		CMD ["altPlaceForArg1", "altPlaceForArg2"] #brackets also here
+		EXPOSE [port exposed to host]
+
+	* example:
+
+			FROM ubuntu:latest
+			MAINTAINER Your Name (email@address.com)
+			RUN apt update
+			RUN apt install nginx
+			COPY default.conf /etc/nginx/conf.d/
+			ENTRYPOINT ["/usr/sbin/nginx" , "-g", "daemon-off;"] #brackets actually used here
+			EXPOSE 80
+
+* build this image (while in the same directory:
+	* `docker build -t my-nginx-server:latest .`
+	* `-t` means to tag the image
+
+* run this image
+	* `docker run -d -p 80:80 --name webserver my-nginx-server`
+	* go to your server's ip in a browser to see the nginx default install landing page
 
 ### Compose?
 deploys containers via scripting i think?
