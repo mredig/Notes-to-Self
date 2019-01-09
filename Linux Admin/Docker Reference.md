@@ -18,7 +18,7 @@
 	* `docker run -d --rm --name [createANameHere] --network [networkName] [image-name] [commandToRun]`
 	* `-d` means *detach* and will run it in the background
 	* `--rm` will delete the container after it has stopped
-	* `--network` and its followup argument is optional, but recommende for production (more on networks below)
+	* `--network` and its followup argument is optional, but recommended for production (more on networks below)
 
 * List containers
 	* `docker container ls -a`
@@ -45,6 +45,7 @@
 			* `overlay` - can communicate with other docker hosts - untested
 	* containers can communicate with each other using container names on custom networks
 		* alternatively, on the default network, you can only communicate with other containers via their ip
+	* containers **CANNOT** communicate with containers on the same host UNLESS they share a network
 	* containers created without specifying a network are automatically connected to the network named `bridge` (not to be confused with the driver named `bridge`)
 	* containers can only be connected to one network at instantiation, but more can be added once created
 
