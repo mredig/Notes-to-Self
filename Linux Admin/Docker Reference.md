@@ -42,9 +42,9 @@
 	* `--driver` is optional as `bridge` is the default value
 		* options:
 			* `bridge` - default - can communicate with others on same *docker network* as well as the internet
-			* `host` - can communicate with others on same *docker network* (and host machine) - (untested and unverified, just guessing)
-			* `none` - obvious, I think
+			* `overlay` - can communicate with other docker hosts - untested
 	* containers can communicate with each other using container names on custom networks
+		* alternatively, on the default network, you can only communicate with other containers via their ip
 	* containers created without specifying a network are automatically connected to the network named `bridge` (not to be confused with the driver named `bridge`)
 	* containers can only be connected to one network at instantiation, but more can be added once created
 
