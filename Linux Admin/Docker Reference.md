@@ -59,7 +59,7 @@
 	* `docker network inspect [networkName]`
 
 ### Dockerfile
-* used to create docker images
+used to create docker images
 tbd
 
 ### Compose?
