@@ -3,17 +3,26 @@
 
 (no brackets in commands unless specified)
 
+
+### Setup
+
+* Install Docker
+	* `curl -fsSL get.docker.com -o get-docker.sh && sh get-docker.sh`
+	* obviously, if you want to inspect the shell file before running it, you can modify the command and look it over
+
 * Download an image
 	* `docker pull [image-name]`
 
 ### Containers
 * Create a container and run it
-	* `docker run -d --name [createANameHere] --network [networkName] [image-name] [commandToRun]`
+	* `docker run -d --rm --name [createANameHere] --network [networkName] [image-name] [commandToRun]`
 	* `-d` means *detach* and will run it in the background
+	* `--rm` will delete the container after it has stopped
 	* `--network` and its followup argument is optional, but recommende for production (more on networks below)
 
 * List containers
-	* `docker container ls`
+	* `docker container ls -a`
+	* `-a` lists all containers, not just those running currently
 
 * Connect to existing, running container's main process
 	* `docker container attach [containerName]`
@@ -21,6 +30,10 @@
 
 * Run a new process in an existing, running container (best not to do in production)
 	* `docker -exec -it [containerName] [command (like /bin/bash)]`
+
+* Detach from a docker container
+	* Hit `Ctrl-p` and then `Ctrl-q`
+	* can be done without releasing `Ctrl` key
 
 ### Networks
 
@@ -45,6 +58,9 @@
 	* `docker network inspect [networkName]`
 
 ### Dockerfile
+* used to create docker images
 tbd
+
 ### Compose?
+deploys containers via scripting i think?
 tbd
