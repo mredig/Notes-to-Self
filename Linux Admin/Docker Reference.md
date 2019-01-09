@@ -1,0 +1,49 @@
+# Docker Reference
+
+(no brackets in commands unless specified)
+
+* Download an image
+	* `docker pull [image-name]`
+
+### Containers
+* Create a container and run it
+	* `docker run -d --name [createANameHere] --network [networkName] [image-name] [commandToRun]`
+	* `-d` means *detach* and will run it in the background
+	* `--network` and its followup argument is optional, but recommende for production (more on networks below)
+
+* List containers
+	* `docker container ls`
+
+* Connect to existing, running container's main process
+	* `docker container attach [containerName]`
+	* **Note**: The attach command will display the output of the ENTRYPOINT/CMD process. This can appear as if the attach command is hung when in fact the process may simply not be interacting with the terminal at that time. [ref](https://docs.docker.com/engine/reference/commandline/attach/#extended-description)
+
+* Run a new process in an existing, running container (best not to do in production)
+	* `docker -exec -it [containerName] [command (like /bin/bash)]`
+
+### Networks
+
+* Create a network
+	* `docker network create --driver bridge [newNetworkName]`
+	* `--driver` is optional as `bridge` is the default value
+		* options:
+			* `bridge` - default - can communicate with others on same *docker network* as well as the internet
+			* `host` - can communicate with others on same *docker network* (and host machine) - (untested and unverified, just guessing)
+			* `none` - obvious, I think
+	* containers can communicate with each other using container names on custom networks
+	* containers created without specifying a network are automatically connected to the network named `bridge` (not to be confused with the driver named `bridge`)
+	* containers can only be connected to one network at instantiation, but more can be added once created
+
+* list networks
+	* `docker network ls`
+
+* connect existing container to a network
+	* `docker network connect [networkName] [containerName]`
+
+* inspect a network
+	* `docker network inspect [networkName]`
+
+### Dockerfile
+tbd
+### Compose?
+tbd
