@@ -1,3 +1,4 @@
+<!-- permalink: a6fe3a777cea529a24e0e738eb19c6e6 DO NOT DELETE OR EDIT THIS LINE -->
 # Docker Reference
 
 (no brackets in commands unless specified)
