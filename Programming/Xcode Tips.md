@@ -1,3 +1,4 @@
+<!-- permalink: f0771b2f44b613a40f7078de16db0875 DO NOT DELETE OR EDIT THIS LINE -->
 # Xcode Tips
 
 

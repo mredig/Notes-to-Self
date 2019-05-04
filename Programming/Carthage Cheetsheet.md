@@ -1,3 +1,4 @@
+<!-- permalink: 449862b9a85c3e7c360e9bb1299ed49b DO NOT DELETE OR EDIT THIS LINE -->
 # Carthage Setup Cheatsheet
 
 1. Create cartfile and add libraries
