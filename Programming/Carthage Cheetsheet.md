@@ -21,7 +21,7 @@
 		* `$(SRCROOT)/Carthage/Build/iOS/[frameworkNameNoBrackets].framework`
 	1. Use the following template and do the same for *Output Files*
 		* `$(BUILT_PRODUCTS_DIR)/$(FRAMEWORKS_FOLDER_PATH)/[frameworkNameNoBrackets].framework`
-1. In the *General* tab of the Xcode target, drag the frameworks from `Carthage/Build/[build platform]/[frameworksHere]` to the *Embedded Binaries* section
+1. In the *General* tab of the Xcode target, drag the frameworks from `Carthage/Build/[build platform]/[frameworksHere]` to the *Linked Frameworks and Libraries* section
 	* You should not need to copy files
 1. (wait for `carthage update` to finish first) Build your project to make sure everything is working right
 
