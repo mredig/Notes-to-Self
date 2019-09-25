@@ -8,6 +8,8 @@
 			* `ios`, `tvos`, `macOS`, `watchos` (comma separated, no spaces if needing more than one)
 		* `--cache-builds`
 			* attempts to reuse existing builds of frameworks instead of rebuilding from scratch
+		* `--no-use-binaries`
+			* disables downloading pre built binaries. This makes running it a lot slower, but resolves issues with debugging output not working in Xcode. 
 1. You may need to wait for the build to finish to be able to add the frameworks to your Xcode project, but you may proceed with the following in general in the meantime
 1. In Xcode, for each target, add a *Run Script* build phase
 	1. **Suggestion**: rename the phase to something like `Run Script - Carthage`
