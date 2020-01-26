@@ -1,3 +1,4 @@
+<!-- permalink: 5062dfbced8870a86f28b30e588bb50c DO NOT DELETE OR EDIT THIS LINE -->
 # Serial Connections on macOS
 
 To make a serial connection on macOS, it can be as simple as
