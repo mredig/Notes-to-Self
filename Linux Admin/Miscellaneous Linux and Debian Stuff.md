@@ -1,3 +1,4 @@
+<!-- permalink: d356ac170f52878b14f9dc95f22315ff DO NOT DELETE OR EDIT THIS LINE -->
 # Miscellaneous Linux and Debian Stuff
 
 * Reconfigure *postfix* (or any package apparently)
