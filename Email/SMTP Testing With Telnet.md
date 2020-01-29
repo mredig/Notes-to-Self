@@ -1,3 +1,4 @@
+<!-- permalink: 871baea67bb6cb3c8828ef65069f2b0e DO NOT DELETE OR EDIT THIS LINE -->
 # SMTP Testing with Telnet
 
 
