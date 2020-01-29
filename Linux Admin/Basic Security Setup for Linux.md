@@ -16,6 +16,12 @@ A scripted implementation of this advice can be found in the [assistance scripts
 	* `adduser example_user sudo`
 * Remove default user account (if applicable eg pi)
 	* `deluser --remove-home <username>`
+* Lock the root account
+	* `passwd -l root`
+		* note that you are still able to use `sudo` and `su`, you just cannot log *directly* into root
+* Install *mosh*
+	* `apt install mosh`
+		* not really security so much as a nice alternative to ssh
 * [Create *ssh key auth*](permalink.php?perma=16d5905a76daf3851e4d3eed5bdb1fe4)
 * ssh config settings */etc/ssh/sshd_config*
 	* `PermitRootLogin no`
