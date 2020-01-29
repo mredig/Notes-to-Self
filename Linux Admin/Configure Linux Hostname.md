@@ -1,3 +1,4 @@
+<!-- permalink: 9909f0cf846591d7e4df2348f1350ce8 DO NOT DELETE OR EDIT THIS LINE -->
 # Configure Linux Hostname
 
 ### Clarifying Terminology
