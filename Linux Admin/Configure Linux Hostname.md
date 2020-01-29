@@ -15,3 +15,5 @@ In the url `www.sitename.com`:
 1. Set up your server's hostfile:
 	* the first line will typically be `127.0.0.1   localhost`
 	* add/edit the line below `127.0.1.1   [FQDN_no_brackets] [hostname_no_brackets]`
+1. Reboot
+1. confirm that the hostname is correct with `hostname` and the FQDN is correct with `hostname -f`
