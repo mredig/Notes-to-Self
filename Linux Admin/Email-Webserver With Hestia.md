@@ -37,3 +37,5 @@
 1. On your master server, from an admin command prompt, run 
 	* `v-add-remote-dns-host [slaveFQDNNoBrackets] [slaveControlPanelPort] admin [slaveAdminPasswordNoBrackets]`
 1. You can now confirm through the slave web control panel that dns zones are syncing over. (log into the `dns-cluster` user to view)
+
+arbitrary change!
