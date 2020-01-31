@@ -1,3 +1,4 @@
+<!-- permalink: 4da2294b935edc055ab44f9636b84efd DO NOT DELETE OR EDIT THIS LINE -->
 # Windows Time Synchronization
 
 Before anything will work, you need to be sure that the computer functioning as the time server allows connections on port 123 both on the server itself and through any firewalls between the clients and the server.

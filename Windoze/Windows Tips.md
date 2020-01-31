@@ -1,3 +1,4 @@
+<!-- permalink: edb057798cffd1a7b02142ab4d6e12f5 DO NOT DELETE OR EDIT THIS LINE -->
 # Windows Tips
 
 ### Active Directory Stuff

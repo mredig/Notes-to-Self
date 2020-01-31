@@ -1,3 +1,4 @@
+<!-- permalink: 561a0e2d10719e059eb5911d125f43d1 DO NOT DELETE OR EDIT THIS LINE -->
 # Windows Create Users Share
 
 This setup will configure shares that will be mounted every time a user logs into their account on the domain.

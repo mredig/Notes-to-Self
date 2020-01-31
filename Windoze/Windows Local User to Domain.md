@@ -1,3 +1,4 @@
+<!-- permalink: 4affe3a12b965ef34ebde71e869bb32d DO NOT DELETE OR EDIT THIS LINE -->
 # Windows Local to Domain User
 
 1. login to computer and add to domain

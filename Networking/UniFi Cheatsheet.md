@@ -1,3 +1,4 @@
+<!-- permalink: 1225962ec805b532e8a086f737c6c428 DO NOT DELETE OR EDIT THIS LINE -->
 # UniFi Cheat Sheet
 
 #### USG ssh Cheats

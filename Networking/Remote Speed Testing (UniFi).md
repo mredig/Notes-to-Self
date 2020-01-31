@@ -1,3 +1,4 @@
+<!-- permalink: aeeb1295c2afdaa243d5e829caeb64e6 DO NOT DELETE OR EDIT THIS LINE -->
 # Speed Testing Specific Device (specifically UniFi)
 
 Note that this method isn't fully verified for integrity.

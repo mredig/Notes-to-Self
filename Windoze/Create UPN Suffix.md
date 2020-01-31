@@ -1,3 +1,4 @@
+<!-- permalink: f44cf8d3bc36b8904895cb1feddd92df DO NOT DELETE OR EDIT THIS LINE -->
 # Create UPN Suffix
 
 1. In *Active Directory Users and Computers*, make sure *View->Advanced Features* is enabled.

@@ -1,3 +1,4 @@
+<!-- permalink: ea574d6597dd4d0ae0c7769f112a2b48 DO NOT DELETE OR EDIT THIS LINE -->
 # Windows Group Policy Administrative Template Setup
 
 

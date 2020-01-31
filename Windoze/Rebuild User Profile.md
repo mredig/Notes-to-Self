@@ -1,3 +1,4 @@
+<!-- permalink: 0e7d29915bf4d5a71954967a4d9dad30 DO NOT DELETE OR EDIT THIS LINE -->
 # Rebuild User Profile
 
 Be aware that there may be 3rd party apps that need to be installed into the user profile. (Gotomeeting, etc)

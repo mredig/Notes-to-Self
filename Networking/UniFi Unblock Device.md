@@ -1,3 +1,4 @@
+<!-- permalink: 2dc345d379bece5cdfe45c261fd06c46 DO NOT DELETE OR EDIT THIS LINE -->
 # UniFi Unblock Device
 
 1. Go to the *Insights* tab

@@ -1,3 +1,4 @@
+<!-- permalink: 091bd8e088092664d1fda0c62ccfdc99 DO NOT DELETE OR EDIT THIS LINE -->
 # PFSense Setup
 
 Preparation...

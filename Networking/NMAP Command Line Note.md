@@ -1,3 +1,4 @@
+<!-- permalink: f48a018b338eaaae84a1eb382e678ca1 DO NOT DELETE OR EDIT THIS LINE -->
 # NMAP Command Line Note
 
 Ping Scan

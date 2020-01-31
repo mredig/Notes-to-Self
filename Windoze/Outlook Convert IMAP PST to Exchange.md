@@ -1,3 +1,4 @@
+<!-- permalink: d89fbf1e00a71c380045ca027eb5d8ce DO NOT DELETE OR EDIT THIS LINE -->
 # Outlook Convert IMAP PST to Exchange
 
 1. Open pst in Outlook - note the profile you're using it in. (this won't work on a non cached pst)

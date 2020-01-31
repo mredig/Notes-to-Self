@@ -1,3 +1,4 @@
+<!-- permalink: bdcee8d7c7517b9fc086f2846f2367e3 DO NOT DELETE OR EDIT THIS LINE -->
 # Windows Update Fixes
 
 ### Fix A

@@ -1,3 +1,4 @@
+<!-- permalink: 61320fa48b7346eea1eaf5dad543a492 DO NOT DELETE OR EDIT THIS LINE -->
 # Mount External Drive on HyperV
 
 1. *Manage Computer* on HyperV host

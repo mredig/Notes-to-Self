@@ -1,3 +1,4 @@
+<!-- permalink: 6ba70723d69ff934b7f7bc7d3ad31fe8 DO NOT DELETE OR EDIT THIS LINE -->
 # Command Line Cheats in Windows
 
 ### AD Remote Rename Computer
