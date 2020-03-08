@@ -1,3 +1,4 @@
+<!-- permalink: 7ee411b43039c7b0439a9a0d1609975f DO NOT DELETE OR EDIT THIS LINE -->
 # Swift On Linux
 
 (specifically Ubuntu 18.04)
