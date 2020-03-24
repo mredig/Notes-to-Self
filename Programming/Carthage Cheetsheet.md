@@ -1,6 +1,8 @@
 <!-- permalink: 449862b9a85c3e7c360e9bb1299ed49b DO NOT DELETE OR EDIT THIS LINE -->
 # Carthage Setup Cheatsheet
 
+
+### Setup cheats
 1. Create cartfile and add libraries
 1. run `carthage update` (or `carthage bootstrap` if working from an existing project)
 	* options:
@@ -29,6 +31,9 @@
 	1. (wait for `carthage update` to finish first) Build your project to make sure everything is working right
 1. for macOS, simply drop the built frameworks from the `Carthage/Build` folder into the macOS build target's `Embedded Binaries`.
 
-
+### Supporting Carthage
+1. Double check permission levels
+1. Make sure to share you set your build scheme to `Shared`
+1. run `carthage build --no-skip-current` in the project directory to confirm everything builds fine
 
 More information is available [here](https://github.com/Carthage/Carthage#getting-started).
