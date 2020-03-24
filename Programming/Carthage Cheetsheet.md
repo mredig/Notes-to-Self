@@ -31,7 +31,7 @@
 	1. (wait for `carthage update` to finish first) Build your project to make sure everything is working right
 1. for macOS, simply drop the built frameworks from the `Carthage/Build` folder into the macOS build target's `Embedded Binaries`.
 
-### Supporting Carthage
+### Supporting Carthage in your framework
 1. Double check permission levels
 1. Make sure to share you set your build scheme to `Shared`
 1. run `carthage build --no-skip-current` in the project directory to confirm everything builds fine
