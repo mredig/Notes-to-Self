@@ -96,5 +96,5 @@ deploys containers via yaml script
 * install docker compose
 	1. go [here](https://docs.docker.com/compose/install/)
 	1. get curl command that looks like this
-		* `sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose; sudo chmod +x /usr/local/bin/docker-compose`
+		* `sudo curl -L "https://github.com/docker/compose/releases/download/1.26.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose; sudo chmod +x /usr/local/bin/docker-compose`
 	1. make sure the url conforms to the latest version available on the [release page](https://github.com/docker/compose/releases)
