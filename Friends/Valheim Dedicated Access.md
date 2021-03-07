@@ -1,3 +1,4 @@
+<!-- permalink: 6522d6fd1526d7acc3b476ecad9a80bb DO NOT DELETE OR EDIT THIS LINE -->
 # Valheim Dedicated Controls
 
 ## Connecting
