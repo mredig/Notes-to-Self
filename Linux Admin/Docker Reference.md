@@ -14,12 +14,16 @@
 	* `docker pull [image-name]`
 
 ### Containers
-* Create a container and run it
+* Create a container and run it in background
 	* `docker run -d --rm -p 8080:80 --name [createANameHere] --network [networkName] [image-name] [commandToRun]`
 	* `-d` means *detach* and will run it in the background
 	* `--rm` will delete the container after it has stopped
 	* `-p [containerPort]:[hostPort]` connects the port on the host the port on the container **NOTE** this can (and DOES in the case of ufw) override firewall settings! only use for services you want exposed on the host's network! (use `docker network` for internal communication between containers) 
 	* `--network` and its followup argument is optional, but recommended for production (more on networks below)
+
+* Create a container and use it interactively
+	* `docker run -it --rm --name [createANameHere] [image-name] [commandToRun]`
+		* for example `docker run -it --rm --name SwiftTest swift:5.7`
 
 * List containers
 	* `docker container ls -a`
