@@ -1,3 +1,4 @@
+<!-- permalink: 0d262219c3121967b495c90aa13285bb DO NOT DELETE OR EDIT THIS LINE -->
 # Use Unsigned Command Line Executables on Mac
 
 1. `spctl developer-mode enable-terminal`
