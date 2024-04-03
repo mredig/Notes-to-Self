@@ -1,3 +1,4 @@
+<!-- permalink: aaba071ba66b59be6fda5443994844f8 DO NOT DELETE OR EDIT THIS LINE -->
 # Alpine Podman and Security Setup
 
 apk add nano
