@@ -10,6 +10,8 @@
 * `rc-service cgroups start`
 
 * `nano .profile`
+
+
 ```
 export EDITOR="nano"
 
@@ -20,6 +22,7 @@ alias gs="git status"
 alias gc="git commit -m"
 alias ga="git add"
 ```
+
 
 * `addgroup sudo`
 * `visudo` # enable sudo group
@@ -39,10 +42,12 @@ alias ga="git add"
 
 * `crontab -e`
 
+
 ```
 * * * * * /usr/bin/uptime >> ~/load
 * * * * * /usr/bin/free -h >> ~/load
 ```
+
 
 * `sudo apk update`
 * `sudo apk add py3-pip`
