@@ -26,6 +26,7 @@ alias ga="git add"
 
 * `addgroup sudo`
 * `visudo` # enable sudo group
+	* uncomment (or add) this line: `%sudo   ALL=(ALL:ALL) ALL`
 
 * `adduser [user-no-brackets]`
 * `adduser [user-no-brackets] sudo`
