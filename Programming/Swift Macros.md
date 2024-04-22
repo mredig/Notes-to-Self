@@ -1,3 +1,4 @@
+<!-- permalink: ab010c3705498311e5468321e0fd6ee8 DO NOT DELETE OR EDIT THIS LINE -->
 # Swift Macros
 
 Disclaimer: This is not definitive, just my understanding.
