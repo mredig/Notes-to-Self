@@ -6,27 +6,27 @@ Disclaimer: This is not definitive, just my understanding.
 ### Macro Types
 * Freestanding Expression macro
 	* can basically do `let a = #macroName(args)`
-	* Declaration
+	* **Declaration**
 		* example declaration keyword: `@freestanding(declaration, names: named(MyClass))`
 			* (yanked directly from the examples - unsure if `names` is required, but it kinda seems like it is)
 		* Generates [`[DeclSyntax]`](https://swiftpackageindex.com/apple/swift-syntax/510.0.1/documentation/swiftsyntax/declsyntax)
-	* Expression
+	* **Expression**
 		* example declaration keyword: `@freestanding(expression)`
 		* Generates [`ExprSyntax`](https://swiftpackageindex.com/apple/swift-syntax/510.0.1/documentation/swiftsyntax/exprsyntax)
 
 * Attached Macros
-	* Accessor
+	* **Accessor**
 		* Adds accessors (like `get`, `set`, `didSet`, `willSet`, and more complex ones too (see docs)
 		* example declaration keyword: `@attached(accessor)`
 		* Generates [`[AccessorDeclSyntax]`](https://swiftpackageindex.com/apple/swift-syntax/510.0.1/documentation/swiftsyntax/accessordeclsyntax)
-	* CodeItem
+	* **CodeItem**
 		* could not find example declaration keyword example
 		* Generates [`[CodeBlockItemSyntax]`](https://swiftpackageindex.com/apple/swift-syntax/510.0.1/documentation/swiftsyntax/codeblockitemsyntax)
-	* Extension
+	* **Extension**
 		* example declaration keyword: `@attached(extension, conformances: Equatable)`
 			* (again yanked from examples. conformances doesn't look explicitly required, but the one time it's omitted there's an alternative argument provided)
 		* Generates [`[ExtensionDeclSyntax]`](https://swiftpackageindex.com/apple/swift-syntax/510.0.1/documentation/swiftsyntax/extensiondeclsyntax)
-	* Member
+	* **Member**
 		* Can add *members* to the declaration it's attached to
 		* example declaration keyword:
 
@@ -60,7 +60,7 @@ Disclaimer: This is not definitive, just my understanding.
 			}
 			```
 
-	* MemberAttribute
+	* **MemberAttribute**
 		* Can add *attributes* to members inside the declaration it's attached to
 		* example declaration keyword: `@attached(memberAttribute)`
 		* Generates [`[AttributeSyntax]`](https://swiftpackageindex.com/apple/swift-syntax/510.0.1/documentation/swiftsyntax/attributesyntax)
@@ -85,7 +85,7 @@ Disclaimer: This is not definitive, just my understanding.
 			}
 			```
 
-	* Peer
+	* **Peer**
 		* Can add "peer" declarations alongside its attached declaration
 		* examples of declaration keyword:
 
