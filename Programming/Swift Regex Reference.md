@@ -1,3 +1,4 @@
+<!-- permalink: d5cfede3389c6db892e35ddfcd909d60 DO NOT DELETE OR EDIT THIS LINE -->
 # Swift Regex Reference
 
 * Labelled match
