@@ -1,7 +1,8 @@
 <!-- permalink: c716ef85197d7b5aeb5db8a7a1bd58a9 DO NOT DELETE OR EDIT THIS LINE -->
+
 # Linux Security Prep List
 
-A scripted implementation of this advice can be found in the [assistance scripts](https://github.com/mredig/assistant_scripts) repo. If you trust me well enough to pipe a script into execution straight from downloading (ironically not the best security practice), I have a convenience url set up so that you may do the following: `perl -e "$(curl -fsSL https://security.redig.me)"`
+A scripted implementation of this advice can be found in the [assistance scripts](https://github.com/mredig/assistant_scripts) repo. If you trust me well enough to pipe a script into execution straight from downloading (ironically not the best security practice), I have a convenience url set up so that you may do the following: `perl -e "$(curl -fsSL https://security.redig.me)"` (consider this script deprecated with no current replacement)
 
 * Automatic Upgrades
 	* install [unattended upgrades](https://wiki.debian.org/UnattendedUpgrades)
