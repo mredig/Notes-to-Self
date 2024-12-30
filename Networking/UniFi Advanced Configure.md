@@ -1,3 +1,4 @@
+<!-- permalink: ffb5b635bfc39d1c87d0e8491749d70f DO NOT DELETE OR EDIT THIS LINE -->
 # UniFi Advanced Configure
 
 This might be specific to the USG 3P, but I assume works on other devices, at least gateways.
