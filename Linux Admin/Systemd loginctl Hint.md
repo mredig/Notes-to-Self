@@ -1,3 +1,4 @@
+<!-- permalink: 2e770ccb575c4f49136e675dc0965083 DO NOT DELETE OR EDIT THIS LINE -->
 # systemd loginctl Hint
 
 If you need a user's processes to continue after a user session terminates, you can run `loginctl enable-linger <username>`
