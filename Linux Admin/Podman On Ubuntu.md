@@ -1,3 +1,4 @@
+<!-- permalink: 566deedd03c6b0736c9a942ba92f2f81 DO NOT DELETE OR EDIT THIS LINE -->
 # Podman on Ubuntu
 
 (disclaimer - i THINK it's unique to ubuntu (on vultr?) deployments, but it may not be)
