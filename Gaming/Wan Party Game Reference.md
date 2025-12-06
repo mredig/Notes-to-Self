@@ -1,3 +1,4 @@
+<!-- permalink: 0c2b84c1162b96500d435c973d26a572 DO NOT DELETE OR EDIT THIS LINE -->
 # Wan Party Connect instructions
 
 For all games:
