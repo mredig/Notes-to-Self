@@ -7,11 +7,10 @@ For all games:
 
 ### Quake 3
 
-* connect
-	1. check your bindings, screen/system settings, character name/avatar, etc
-	1. In the quake 3 main game menu, open the console (`~`) and run the following commands
-		* `\password [password-no-brackets]`
-		* `\connect [ourServer]:[serverPort]`
+1. check your bindings, screen/system settings, character name/avatar, etc
+1. In the quake 3 main game menu, open the console (`~`) and run the following commands
+	* `\password [password-no-brackets]`
+	* `\connect [ourServer]:[serverPort]`
 	
 ### Urban Terror 2.4/3.2
 
