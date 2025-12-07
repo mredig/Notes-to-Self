@@ -23,6 +23,17 @@ For all games:
 	* `\password [password-no-brackets]`
 	* `\connect [ourServer]:[serverPort]`
 
+### Urban Terror 4.3
+
+* basic get-it-working
+	* If it's not launching, try installing lib sdl:
+		* `sudo apt install libsdl1.2debian`
+* connect
+	1. launch the game
+	1. now, in the UT game menu, open the console (`~`) and run the following commands
+		* `\password [password-no-brackets]`
+		* `\connect [ourServer]:[serverPort]`
+
 ### Counter-Strike 1.6
 
 1. In the main game menu, `Find servers`
@@ -31,3 +42,17 @@ For all games:
 1. enter `[ourServer]:[serverPort]`
 1. it should appear in the list
 1. when you press `Connect`, it should ask for the same password as others
+
+
+### Counter-Strike: Source
+
+* Linux users with an ultrawide display:
+	* The game crashes when trying to use fullscreen exclusive on an ultrawide, so add the following args to the steam launch options:
+		* `-windowed -noborder -w [screenWidth] -h [screenHeight]`
+* connect:
+	1. In the main game menu, `Find servers`
+	1. Choose the `Favorites` tab
+	1. Press the `Add a Server` button
+	1. enter `[ourServer]:[serverPort]`
+	1. it should appear in the list
+	1. when you press `Connect`, it should ask for the same password as others
