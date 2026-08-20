@@ -1,3 +1,4 @@
+<!-- permalink: 7975e2b92fc72959872d63fce000943a DO NOT DELETE OR EDIT THIS LINE -->
 # Lighter DB Setup
 
 1. create sql file for db/table structure, eg 
